@@ -89,6 +89,6 @@ Algunas direcciones multicast en IPv6 están predefinidas para funciones especí
 # Resultados
 Vamos a realizar un ping desde Cliente 1 hacia Cliente 2 para iniciar un tráfico ICMP y analizar el tráfico de la red, los mensajes y paquetes de la misma.
 
-![Figura 1](TP1/imagenes/PingdeCliente1aCliente2.png)
+![Figura 1](imagenes/PingdeCliente1aCliente2.png)
 
 
