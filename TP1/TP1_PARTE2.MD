@@ -80,14 +80,17 @@ Para realizar la configuración de este switch de Cisco y realizar los procedimi
 
 2. Configurar direcciones IP estáticas en las dos computadoras:
 - [x] PC1: 192.168.1.10, Máscara: 255.255.255.0 
+
 ![Figura 6](imagenes/Parte2_Figura6.jpg)
 - [x] PC2: 192.168.1.11, Máscara: 255.255.255.0 
+
 ![Figura 7](imagenes/Parte2_Figura7.jpg)
 
 3. Verificar la configuración de red en cada PC
 - [x] Deshabilitar firewall para permitir ICMP y TCP (que se verá mas adelante)
 - [x] Ejecutar ipconfig para confirmar configuración IP.
 - [x] Probar la conectividad con ping
+
 ![Figura 8](imagenes/Parte2_Figura8.jpg)
 
 ### Configurar un puerto del switch en modo mirroring y monitorear tráfico
@@ -111,6 +114,7 @@ Para realizar la configuración de este switch de Cisco y realizar los procedimi
 ### Transmitir mensaje entre las computadoras y analizar el tráfico
 
 1. Configurar PC1 como servidor
+
 ![Figura 11](imagenes/Parte2_Figura11.png)
 
 2. Ejecutar nuevas pruebas de conectividad mientras se monitorea
