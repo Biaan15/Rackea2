@@ -91,4 +91,7 @@ Vamos a realizar un ping desde Cliente 1 hacia Cliente 2 para iniciar un tráfic
 
 ![Figura 1](imagenes/PingdeCliente1aCliente2.png)
 
+Se tomaron diversos mensajes para detectar el tráfico y la comunicación entre dispositivos en la red, analizando protocolos como ICMP y ARP, y documentando los tiempos de respuesta y rutas utilizadas en cada interacción.
+
+![Figura 2](imagenes/FlujoDeComunicaciónEnLaRed.png)
 
