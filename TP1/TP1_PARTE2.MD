@@ -1,4 +1,4 @@
-# Parte II - Configuración y Análisis de tráfico IPv4/IPv6
+# Parte II - Manejo de equipamiento físico, recuperación de contraseñas de equipos de red y establecimiento de red y análisis de tráfico.
 
 ## Introducción
 
@@ -14,7 +14,9 @@ Este trabajo continua con lo visto en la parte 1 y proporciona una visión prác
 
 En primer lugar, se busca adquirir un conocimiento profundo sobre el switch. Para ello, se usaron recursos como la hoja de datos e información técnica del dispositivo, para poder describir al switch de manera detallada, sus especificaciones y características.
 
-Se trabajó con un switch de la serie Switch CISCO 2950. Esta es una serie de switches independientes de configuración fija, gestionables a 10/100 Mbps para proporcionar conectividad de usuarios para redes pequeñas y medianas con velocidad de cable y funcionalidad Cisco IOS para uso de datos, video y voz. Todos los switches de la serie llevan embebido el software de administrador de dispositivos Cisco que permite configurarlo y controlarlo a través de navegador web estándar. 
+Se trabajó con un switch de la serie Switch CISCO 2950. Esta es una serie de switches independientes de configuración fija, gestionables a 10/100 Mbps para proporcionar conectividad de usuarios para redes pequeñas y medianas con velocidad de cable y funcionalidad Cisco IOS para uso de datos, video y voz. Todos los switches de la serie llevan embebido el software de administrador de dispositivos Cisco que permite configurarlo y controlarlo a través de navegador web estándar.
+
+![Figura 1](imagenes/Parte2_Figura1.jpg)
 
 **Especificaciones**
 Dimensiones: 44,4 cm x 24,1 cm x 4,3 cm  (ancho x Profundidad x Altura). Su peso es de unos 3 kg.
@@ -42,156 +44,153 @@ Para realizar la configuración de este switch de Cisco y realizar los procedimi
 
 **Conectar una PC al puerto de consola del switch Cisco a 9600 baudios utilizando PUTTY**
 
-Reunir materiales:
-Cable de consola - RJ45 a DB9
-Adaptador USB a Serial
-Notebook con Windows en nuestro caso
-Software PuTTY
+1. Reunir materiales:
+-[x] Cable de consola - RJ45 a DB9
+-[x] Adaptador USB a Serial
+-[x] Notebook con Windows en nuestro caso
+-[x] Software PuTTY
 
-Conectar el cable de consola:
-Conectar el extremo RJ45 al puerto de consola del switch y extremo USB a la Notebook
-Abrir PuTTY y configurar la conexión para acceder a la CLI
-Conexión Serie
-Port: COMx, según corresponda
-Speed: 9600.
+2. Conectar el cable de consola:
+-[x] Conectar el extremo RJ45 al puerto de consola del switch y extremo USB a la Notebook
+![Figura 2](imagenes/Parte2_Figura2.jpg)
+-[x] Abrir PuTTY y configurar la conexión para acceder a la CLI
+- Conexión Serie
+- Port: COMx, según corresponda
+- Speed: 9600.
 
-Screenshot 2025-03-25 135433.png
+![Figura 3](imagenes/Parte2_Figura3.png)
 
 **Acceder a las opciones de administración del switch y modificar claves de acceso**
 
-Configurar contraseña de acceso al modo privilegiado
-Entrar al modo de usuario privilegiado (> enable)
-Entrar en el modo de configuración global (> configure terminal)
-Configurar contraseña de acceso al modo privilegiado (> enable secret …)
+1. Configurar contraseña de acceso al modo privilegiado
+-[x] Entrar al modo de usuario privilegiado (> enable)
+-[x] Entrar en el modo de configuración global (> configure terminal)
+-[x] Configurar contraseña de acceso al modo privilegiado (> enable secret …)
 
-Configurar contraseñas de acceso a la consola
-Captura de pantalla 2025-03-20 143904.png 
+2. Configurar contraseñas de acceso a la consola
+![Figura 4](imagenes/Parte2_Figura4.png)
 
 
 **Conectar dos computadoras al switch, configurar una red y testear conectividad**
 
-Conectar las computadoras a los puertos del switch con los cables Ethernet.
-PC1: puerto Fa0/22.
-PC2: puerto Fa0/24.
-Captura de pantalla 2025-03-20 144103.png
+1. Conectar las computadoras a los puertos del switch con los cables Ethernet.
+-[x] PC1: puerto Fa0/22.
+-[x] PC2: puerto Fa0/24.
+![Figura 5](imagenes/Parte2_Figura5.png)
 
-Configurar direcciones IP estáticas en las dos computadoras:
-PC1: 192.168.1.10, Máscara: 255.255.255.0 WhatsApp Image 2025-03-20 at 14.51.28_d72ad2c2.jpg
-PC2: 192.168.1.11, Máscara: 255.255.255.0 WhatsApp Image 2025-03-20 at 14.53.28_95dfdf7a.jpg
+2. Configurar direcciones IP estáticas en las dos computadoras:
+-[x] PC1: 192.168.1.10, Máscara: 255.255.255.0 
+![Figura 6](imagenes/Parte2_Figura6.jpg)
+-[x] PC2: 192.168.1.11, Máscara: 255.255.255.0 
+![Figura 7](imagenes/Parte2_Figura7.jpg)
 
-Verificar la configuración de red en cada PC
-Deshabilitar firewall para permitir ICMP y TCP (que se verá mas adelante)
-Ejecutar ipconfig para confirmar configuración IP.
-Probar la conectividad con ping
-WhatsApp Image 2025-03-20 at 14.53.10_10c15abb.jpg
+3. Verificar la configuración de red en cada PC
+-[x] Deshabilitar firewall para permitir ICMP y TCP (que se verá mas adelante)
+-[x] Ejecutar ipconfig para confirmar configuración IP.
+-[x] Probar la conectividad con ping
+![Figura 8](imagenes/Parte2_Figura8.jpg)
 
 **Configurar un puerto del switch en modo mirroring y monitorear tráfico**
 
-Conectar otra computadora al switch.
-PC3: puerto Fa0/23.
+1. Conectar otra computadora al switch.
+-[x] PC3: puerto Fa0/23.
 
-Configurar port mirroring en el switch:
-Captura de pantalla 2025-03-20 151557.png
+2. Configurar port mirroring en el switch:
+![Figura 9](imagenes/Parte2_Figura9.png)
 
-Configurar la tercera PC con software de captura de paquetes
-Instalar y ejecutar Wireshark.
-Seleccionar la interfaz de red de Ethernet 
-Iniciar la captura
+3. Configurar la tercera PC con software de captura de paquetes
+-[x] Instalar y ejecutar Wireshark.
+-[x] Seleccionar la interfaz de red de Ethernet 
+-[x] Iniciar la captura
 
-Ejecutar pruebas de conectividad mientras se monitorea
-Filtrar en PC3 tráfico ICMP
-Realizar ping entre PC1 y PC2. Captura de pantalla 2025-03-20 151536.png
+4. Ejecutar pruebas de conectividad mientras se monitorea
+-[x] Filtrar en PC3 tráfico ICMP
+-[x] Realizar ping entre PC1 y PC2. 
+![Figura 10](imagenes/Parte2_Figura10.png)
 
 **Transmitir mensaje entre las computadoras y analizar el tráfico**
 
-Configurar PC1 como servidor
-Script de Python Screenshot 2025-03-25 135301.png
+1. Configurar PC1 como servidor
+![Figura 11](imagenes/Parte2_Figura11.png)
 
-Ejecutar nuevas pruebas de conectividad mientras se monitorea
-Filtrar en PC3 tráfico TCP
-Envío de Paquete desde PC2 WhatsApp Image 2025-03-20 at 19.47.47_9a2576fd.jpg
-Capturamos el tráfico. Captura de pantalla 2025-03-20 155737.png
-Captura de pantalla 2025-03-20 155900.png
+2. Ejecutar nuevas pruebas de conectividad mientras se monitorea
+-[x] Filtrar en PC3 tráfico TCP
+-[x] Envío de Paquete desde PC2 
+![Figura 12](imagenes/Parte2_Figura12.jpg)
+-[x] Capturamos el tráfico. 
+![Figura 13](imagenes/Parte2_Figura13.png)
+![Figura 14](imagenes/Parte2_Figura14.png)
 
 Una vez enviado el mensaje, en términos de encapsulación,el mismo viaja dentro de la sección de datos del segmento TCP, que a su vez está dentro del paquete IP, y finalmente dentro de la trama Ethernet. ya que hemos capturado dicho paquete por la computadora conectada al puerto de mirroring, podemos analizar cómo dicho mensaje se encapsula en el segmento TCP:
 
-Captura de pantalla 2025-03-20 155947.png
+![Figura 15](imagenes/Parte2_Figura15.png)
 
 ### Encapsulación del paquete
 1. **Ethernet II Header**
-Dirección MAC de origen: `40:c2:ba:e2:c6:e3`
-Dirección MAC de destino: `80:fa:5b:9a:00:13`
-Tipo de protocolo: `0x0800` (IPv4)
+- Dirección MAC de origen: `40:c2:ba:e2:c6:e3`
+- Dirección MAC de destino: `80:fa:5b:9a:00:13`
+- Tipo de protocolo: `0x0800` (IPv4)
 
 2. **Encabezado IPv4**
-Dirección IP de origen: `192.168.1.11`
-Dirección IP de destino: `192.168.1.10`
-Protocolo: `TCP (0x06)`
+- Dirección IP de origen: `192.168.1.11`
+- Dirección IP de destino: `192.168.1.10`
+- Protocolo: `TCP (0x06)`
 
 3. **Encabezado TCP**
-Puerto de origen: `58353` 
-Puerto de destino: `12345`
-Flags: `PSH, ACK`
-Número de secuencia: `1`
-Número de acuse de recibo: `1`
-Tamaño de ventana: `131328`
+- Puerto de origen: `58353` 
+- Puerto de destino: `12345`
+- Flags: `PSH, ACK`
+- Número de secuencia: `1`
+- Número de acuse de recibo: `1`
+- Tamaño de ventana: `131328`
 
 4. **Datos (Payload)**
 Tenemos el mensaje enviado: “aguante Rackea2 y Wi-Figthers”, que se convierte a ASCII con sus valores hexadecimales correspondientes:
-`61 67 75 61 6e 74 65 20 52 61 63 6b 65 61 32 20 79 20 57 69 2d 46 69 67 74 68 65 72 73`
+- `61 67 75 61 6e 74 65 20 52 61 63 6b 65 61 32 20 79 20 57 69 2d 46 69 67 74 68 65 72 73`
 
 
 A su vez podemos analizar las comunicaciones ARP que se observan en este tráfico capturado:
-Captura de pantalla 2025-03-20 153427.png
+![Figura 16](imagenes/Parte2_Figura16.png)
 
 En la captura proporcionada se pueden observar paquetes de ARP con solicitudes y respuestas típicas, tales como:  
-**Solicitud ARP (“Who has”):** Cuando un dispositivo necesita comunicarse con otro en la misma red local, pero no conoce su dirección MAC, envía un mensaje de broadcast a todos los dispositivos de la red preguntando: “Quién tiene la dirección IP [IP destino]? Por favor, responde a [IP origen]”. Este mensaje se envía a la dirección MAC de broadcast. 
-**Respuesta ARP (“is at”):** El dispositivo que posee la dirección IP solicitada responde de manera directa al emisor del mensaje, informando: “[IP destino] está en [dirección MAC]”. Esto permite al dispositivo solicitante conocer la dirección física (MAC) para establecer la comunicación.
+- **Solicitud ARP (“Who has”):** Cuando un dispositivo necesita comunicarse con otro en la misma red local, pero no conoce su dirección MAC, envía un mensaje de broadcast a todos los dispositivos de la red preguntando: “Quién tiene la dirección IP [IP destino]? Por favor, responde a [IP origen]”. Este mensaje se envía a la dirección MAC de broadcast. 
+- **Respuesta ARP (“is at”):** El dispositivo que posee la dirección IP solicitada responde de manera directa al emisor del mensaje, informando: “[IP destino] está en [dirección MAC]”. Esto permite al dispositivo solicitante conocer la dirección física (MAC) para establecer la comunicación.
 
 Además, podemos observar otro tipo de información que se encuentra en las respectivas columnas, por ejemplo:
 
-**Source (origen):** Dirección MAC del dispositivo que responde.
-**Destination (destino):** Dirección MAC del dispositivo que hizo la solicitud.
-**Cacheo ARP:** El dispositivo solicitante guarda la asociación IP-MAC en su tabla ARP para usarla en futuras comunicaciones.
+- **Source (origen):** Dirección MAC del dispositivo que responde.
+- **Destination (destino):** Dirección MAC del dispositivo que hizo la solicitud.
+- **Cacheo ARP:** El dispositivo solicitante guarda la asociación IP-MAC en su tabla ARP para usarla en futuras comunicaciones.
 
-b) ¿Cuáles son las direcciones IP en los datagramas? Indicar con un ejemplo.
+Además, podemos analizar las direcciones IP en los datagramas:
 
-Captura de pantalla 2025-03-20 153520.png
-Captura de pantalla 2025-03-20 154516.png
+![Figura 17](imagenes/Parte2_Figura17.png)
+![Figura 18](imagenes/Parte2_Figura18.png)
 
 Las direcciones IP que aparecen en la imagen capturada son las de origen y destino, dependiendo de quién inicia la comunicación y quién la recibe. Por ejemplo:
 
-**Dirección IP de origen:** Es la IP del dispositivo que está enviando el datagrama. Sirve para identificar al remitente en la comunicación. 
+- **Dirección IP de origen:** Es la IP del dispositivo que está enviando el datagrama. Sirve para identificar al remitente en la comunicación. 
 En esta imagen se puede observar como **IP de origen: 192.168.1.11 (el Cliente 1 que envía la solicitud ICMP)**.
 
-**Dirección IP de destino:** Es la IP del dispositivo receptor, al que se dirige el datagrama. 
+- **Dirección IP de destino:** Es la IP del dispositivo receptor, al que se dirige el datagrama. 
 En esta imagen se puede observar como **IP de destino: 192.168.1.10 (el Cliente 2 que recibe y debe responder)**.
 
-En el caso de una solicitud ICMP:
+1. En el caso de una solicitud ICMP:
 El datagrama enviado puede contener información como por ejemplo:
 
-**Tipo de mensaje:** Solicitud de eco. 
-**Código:** Identifica más detalles del mensaje ICMP.
-**Campo de datos:** Es el contenido que se desea enviar en el mensaje.
+- **Tipo de mensaje:** Solicitud de eco. 
+- **Código:** Identifica más detalles del mensaje ICMP.
+- **Campo de datos:** Es el contenido que se desea enviar en el mensaje.
 
-En el caso de una respuesta ICMP:
+2. En el caso de una respuesta ICMP:
 Cuando el Cliente 2 responde al Cliente 1, el datagrama cambia:
 
-**IP de origen:** Ahora es 192.168.1.10 (el Cliente 2 responde). 
-**IP de destino:** Vuelve a ser 192.168.1.11 (el Cliente 1 que originó la solicitud).
-**Tipo de mensaje:** Respuesta de eco.
+- **IP de origen:** Ahora es 192.168.1.10 (el Cliente 2 responde). 
+- **IP de destino:** Vuelve a ser 192.168.1.11 (el Cliente 1 que originó la solicitud).
+- **Tipo de mensaje:** Respuesta de eco.
 
 Estas direcciones IP son esenciales para verificar la conectividad entre dispositivos, identificar problemas de configuración o redes, y analizar el comportamiento del tráfico. Con las capturas de herramientas como Wireshark, podemos confirmar que los mensajes están viajando correctamente entre los dispositivos en la red.
 
-c) ¿Cómo determina el enrutador la comunicación entre un host y otro?
-
-d) ¿Para qué usamos el switch? ¿Por qué el switch no tiene asignadas direcciones IP en sus interfaces?
-
-El switch cumple la función de interconectar los dispositivos dentro de la red local, permitiendo la comunicación entre los hosts, además de incorporar el router para comunicar entre las subredes. Como dispositivo de capa de enlace de datos, reenvía tráfico basándose en la dirección MAC de destino de la trama y en el puerto de entrada por el que ingresa, según su tabla de switching. 
-Dado que el switch opera en Capa 2, no necesita direcciones IP en sus interfaces, ya que no realiza enrutamiento, sino solo conmutación de tramas dentro de la red local. En cambio, el router, que opera en Capa 3, sí requiere direcciones IP, pues es el encargado de interconectar distintas redes y gestionar el tráfico entre ellas.
-En este caso, el switch permite que exista una comunicación entre los dispositivos que se encuentran conectados a él a través de sus interfaces, tal es el caso de h1, h2 y h3. El router también está conectado a dicho switch para facilitar la comunicación entre las distintas subredes que se pueden llegar a tener. Lo único que hace es pasar los datos entre los hosts y el router sin la necesidad de tener que procesar las direcciones IP. 
-
-No tiene asignado direcciones IP en sus interfaces debido a que el switch opera en la capa de enlace de datos. Esto implica que no es necesario para el cumplimiento de su función principal de conmutación. Esto significa que los switches trabajan únicamente con direcciones MAC, que son identificadores únicos asociados a las tarjetas de red de los dispositivos conectados. 
 
 ---
 
