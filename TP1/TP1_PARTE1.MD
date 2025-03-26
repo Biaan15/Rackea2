@@ -190,3 +190,22 @@ Por otro lado, la tabla ARP del Router contiene las direcciones IP y MAC corresp
 Debido a la falta de comunicación, el dispositivo h3 aún no se encuentra registrado en la tabla ARP de la interfaz eth1.
 
 ![Figura 12](imagenes/Parte1_Figura12.png)
+
+Las direcciones de broadcast en IPv4 son direcciones especiales utilizadas para enviar un paquete a todos los dispositivos de una misma red local de manera simultánea. Estas direcciones permiten que un solo paquete de datos sea procesado por todos los hosts de la red. 
+
+Las utilidades de las direcciones de broadcast en IPv4 son:
+
+1. **Difusión de información:** permiten enviar un único mensaje a todos los dispositivos en una red local. Un ejemplo puede ser cuando un router necesita informar a todos los dispositivos de la red sobre un cambio en la configuración o una actualización. 
+2. **Address Resolution Protocol:** ARP, como ya hemos analizado, utiliza broadcast para encontrar la dirección MAC de un dispositivo correspondiente a una dirección IP, es decir, cuando se hace una ARP request. 
+3. **DHCP:** cuando un dispositivo se conecta a una red y necesita una dirección IP, envía un mensaje DHCPDISCOVER como broadcast para encontrar un servidor DHCP que le asigne una dirección IP. 
+4. **Actualizaciones de enrutamiento:** los routers pueden usar broadcast para enviar actualizaciones de tablas de enrutamiento a otros routers en la misma red. 
+5. **Descubrimiento de servicios:** algunos protocolos utilizan direcciones de broadcast para descubrir servicios en una red local. Esto permite que los dispositivos encuentren servidores o servicios sin necesidad de una configuración previa.
+
+Por otro lado, las direcciones de multicast en IPv4 son direcciones especiales que se utilizan para enviar el mismo y único paquete a un grupo específico de dispositivos dentro de una red. Esto optimiza la transmisión de datos al reducir la carga de tráfico en la red y permite que los datos lleguen únicamente a destinatarios interesados. 
+
+Las utilidades de las direcciones de multicast en IPv4 son:
+
+1. **Optimización del ancho de banda:** permiten enviar un solo flujo de datos que pueden recibir múltiples destinatarios, reduciendo la carga de la red. Esto es crucial para aplicaciones que demandan un alto ancho de banda, ya que evita la necesidad de enviar múltiples copias de los mismos datos a diferentes destinatarios.
+2. **Aplicaciones de streaming:** el multicast es ideal para las transmisión de video y audio en vivo, como eventos deportivos, conferencias, etc. 
+3. **Actualización de software y distribución de contenido:** este tipo de direcciones facilitan la entrega simultánea de actualizaciones de software y contenido a múltiples dispositivos.
+4. **Videoconferencias y juegos online:** las aplicaciones de videoconferencia y los juegos en línea se benefician enormemente del multicast, ya que permite una comunicación en tiempo real eficiente entre múltiples participantes.  
