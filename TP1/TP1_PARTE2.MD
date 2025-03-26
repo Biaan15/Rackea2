@@ -19,25 +19,25 @@ Se trabajó con un switch de la serie Switch CISCO 2950. Esta es una serie de sw
 ![Figura 1](imagenes/Parte2_Figura1.jpg)
 
 **Especificaciones**
-Dimensiones: 44,4 cm x 24,1 cm x 4,3 cm  (ancho x Profundidad x Altura). Su peso es de unos 3 kg.
-Modelos: Cisco Catalyst 2950-12, 2950-24, 2950-48.
-Puertos Ethernet: 12, 24 o 48 puertos 10/100 Mbps y 2 puertos fijos de enlace ascendente.
-Compatibilidad: compatible con la migración a Gigabit Ethernet a través de medios de cobre en la capa de acceso.
+- Dimensiones: 44,4 cm x 24,1 cm x 4,3 cm  (ancho x Profundidad x Altura). Su peso es de unos 3 kg.
+- Modelos: Cisco Catalyst 2950-12, 2950-24, 2950-48.
+- Puertos Ethernet: 12, 24 o 48 puertos 10/100 Mbps y 2 puertos fijos de enlace ascendente.
+- Compatibilidad: compatible con la migración a Gigabit Ethernet a través de medios de cobre en la capa de acceso.
 
 **Anatomía y paneles**
-Indicadores LED: muestran el estado de conexión, velocidad y actividad de los puertos. Un LED verde generalmente significa que el puerto está en funcionamiento.  
-Paneles Frontales: incluyen indicadores LED para el estado de los puertos, energía y enlace. Los LEDs de enlace y actividad muestran si hay una conexión activa y si hay tráfico de datos en el puerto. Parpadean cuando se envían o reciben datos. 
-Interfaces: puertos Ethernet para conexiones de red (10/100 Mbps - Uplink Gigabit Ethernet), puertos de administración (Puerto de Consola - Puerto Auxiliar) y puertos de alimentación (Conexión de Energía). 
+- Indicadores LED: muestran el estado de conexión, velocidad y actividad de los puertos. Un LED verde generalmente significa que el puerto está en funcionamiento. 
+- Paneles Frontales: incluyen indicadores LED para el estado de los puertos, energía y enlace. Los LEDs de enlace y actividad muestran si hay una conexión activa y si hay tráfico de datos en el puerto. Parpadean cuando se envían o reciben datos. 
+- Interfaces: puertos Ethernet para conexiones de red (10/100 Mbps - Uplink Gigabit Ethernet), puertos de administración (Puerto de Consola - Puerto Auxiliar) y puertos de alimentación (Conexión de Energía). 
 
 **Funciones**
-Conectividad: proporciona conectividad de red de alta velocidad con soporte para Fast Ethernet y Gigabit Ethernet.
-Gestión: configuración y gestión a través de la CLI (Command Line Interface) de Cisco.
-Redundancia de energía: compatible con sistemas de alimentación redundante opcionales, proporcionando una mayor fiabilidad en entornos críticos. Esto nos permite, entre otras cosas, continuidad del servicio, seguridad y fiabilidad, y facilidad de implementación. 
-Prioridades de tráfico: soporte para cuatro colas de salida, permitiendo la asignación de propiedades para diferentes aplicaciones en la LAN. Esto se conoce como Calidad de Servicio (QoS), y es esencial para gestionar eficazmente el rendimiento de la red. Algunos beneficios de esta función son la optimización del ancho de banda, gestión de tráfico eficiente, y configuración flexible. 
+- Conectividad: proporciona conectividad de red de alta velocidad con soporte para Fast Ethernet y Gigabit Ethernet.
+- Gestión: configuración y gestión a través de la CLI (Command Line Interface) de Cisco.
+- Redundancia de energía: compatible con sistemas de alimentación redundante opcionales, proporcionando una mayor fiabilidad en entornos críticos. Esto nos permite, entre otras cosas, continuidad del servicio, seguridad y fiabilidad, y facilidad de implementación. 
+- Prioridades de tráfico: soporte para cuatro colas de salida, permitiendo la asignación de propiedades para diferentes aplicaciones en la LAN. Esto se conoce como Calidad de Servicio (QoS), y es esencial para gestionar eficazmente el rendimiento de la red. Algunos beneficios de esta función son la optimización del ancho de banda, gestión de tráfico eficiente, y configuración flexible. 
 
 **Software y gestión**
-Cisco Device Manager: software embebido que permite configurar y monitorear el switch a través de un navegador web estándar.
-Cisco Network Assistant: aplicación de gestión de red que simplifica la administración de redes pequeñas y medianas. 
+- Cisco Device Manager: software embebido que permite configurar y monitorear el switch a través de un navegador web estándar.
+- Cisco Network Assistant: aplicación de gestión de red que simplifica la administración de redes pequeñas y medianas. 
 
 
 Para realizar la configuración de este switch de Cisco y realizar los procedimientos requeridos para trabajar con el mismo, se ha desarrollado una checklist, en la cual se ejecutan paso por paso los comandos y acciones necesarias para lograr dicho objetivo
