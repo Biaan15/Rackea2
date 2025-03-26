@@ -42,7 +42,7 @@ Se trabajó con un switch de la serie Switch CISCO 2950. Esta es una serie de sw
 
 Para realizar la configuración de este switch de Cisco y realizar los procedimientos requeridos para trabajar con el mismo, se ha desarrollado una checklist, en la cual se ejecutan paso por paso los comandos y acciones necesarias para lograr dicho objetivo
 
-###Conectar una PC al puerto de consola del switch Cisco a 9600 baudios utilizando PUTTY
+### Conectar una PC al puerto de consola del switch Cisco a 9600 baudios utilizando PUTTY
 
 1. Reunir materiales:
 - [x] Cable de consola - RJ45 a DB9
@@ -60,7 +60,7 @@ Para realizar la configuración de este switch de Cisco y realizar los procedimi
 
 ![Figura 3](imagenes/Parte2_Figura3.png)
 
-###Acceder a las opciones de administración del switch y modificar claves de acceso
+### Acceder a las opciones de administración del switch y modificar claves de acceso
 
 1. Configurar contraseña de acceso al modo privilegiado
 - [x] Entrar al modo de usuario privilegiado (> enable)
@@ -71,7 +71,7 @@ Para realizar la configuración de este switch de Cisco y realizar los procedimi
 ![Figura 4](imagenes/Parte2_Figura4.png)
 
 
-###Conectar dos computadoras al switch, configurar una red y testear conectividad
+### Conectar dos computadoras al switch, configurar una red y testear conectividad
 
 1. Conectar las computadoras a los puertos del switch con los cables Ethernet.
 - [x] PC1: puerto Fa0/22.
@@ -90,7 +90,7 @@ Para realizar la configuración de este switch de Cisco y realizar los procedimi
 - [x] Probar la conectividad con ping
 ![Figura 8](imagenes/Parte2_Figura8.jpg)
 
-###Configurar un puerto del switch en modo mirroring y monitorear tráfico
+### Configurar un puerto del switch en modo mirroring y monitorear tráfico
 
 1. Conectar otra computadora al switch.
 - [x] PC3: puerto Fa0/23.
@@ -108,7 +108,7 @@ Para realizar la configuración de este switch de Cisco y realizar los procedimi
 - [x] Realizar ping entre PC1 y PC2. 
 ![Figura 10](imagenes/Parte2_Figura10.png)
 
-###Transmitir mensaje entre las computadoras y analizar el tráfico
+### Transmitir mensaje entre las computadoras y analizar el tráfico
 
 1. Configurar PC1 como servidor
 ![Figura 11](imagenes/Parte2_Figura11.png)
