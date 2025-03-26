@@ -42,82 +42,82 @@ Se trabajó con un switch de la serie Switch CISCO 2950. Esta es una serie de sw
 
 Para realizar la configuración de este switch de Cisco y realizar los procedimientos requeridos para trabajar con el mismo, se ha desarrollado una checklist, en la cual se ejecutan paso por paso los comandos y acciones necesarias para lograr dicho objetivo
 
-**Conectar una PC al puerto de consola del switch Cisco a 9600 baudios utilizando PUTTY**
+###Conectar una PC al puerto de consola del switch Cisco a 9600 baudios utilizando PUTTY
 
 1. Reunir materiales:
--[x] Cable de consola - RJ45 a DB9
--[x] Adaptador USB a Serial
--[x] Notebook con Windows en nuestro caso
--[x] Software PuTTY
+- [x] Cable de consola - RJ45 a DB9
+- [x] Adaptador USB a Serial
+- [x] Notebook con Windows en nuestro caso
+- [x] Software PuTTY
 
 2. Conectar el cable de consola:
--[x] Conectar el extremo RJ45 al puerto de consola del switch y extremo USB a la Notebook
+- [x] Conectar el extremo RJ45 al puerto de consola del switch y extremo USB a la Notebook
 ![Figura 2](imagenes/Parte2_Figura2.jpg)
--[x] Abrir PuTTY y configurar la conexión para acceder a la CLI
+- [x] Abrir PuTTY y configurar la conexión para acceder a la CLI
 - Conexión Serie
 - Port: COMx, según corresponda
 - Speed: 9600.
 
 ![Figura 3](imagenes/Parte2_Figura3.png)
 
-**Acceder a las opciones de administración del switch y modificar claves de acceso**
+###Acceder a las opciones de administración del switch y modificar claves de acceso
 
 1. Configurar contraseña de acceso al modo privilegiado
--[x] Entrar al modo de usuario privilegiado (> enable)
--[x] Entrar en el modo de configuración global (> configure terminal)
--[x] Configurar contraseña de acceso al modo privilegiado (> enable secret …)
+- [x] Entrar al modo de usuario privilegiado (> enable)
+- [x] Entrar en el modo de configuración global (> configure terminal)
+- [x] Configurar contraseña de acceso al modo privilegiado (> enable secret …)
 
 2. Configurar contraseñas de acceso a la consola
 ![Figura 4](imagenes/Parte2_Figura4.png)
 
 
-**Conectar dos computadoras al switch, configurar una red y testear conectividad**
+###Conectar dos computadoras al switch, configurar una red y testear conectividad
 
 1. Conectar las computadoras a los puertos del switch con los cables Ethernet.
--[x] PC1: puerto Fa0/22.
--[x] PC2: puerto Fa0/24.
+- [x] PC1: puerto Fa0/22.
+- [x] PC2: puerto Fa0/24.
 ![Figura 5](imagenes/Parte2_Figura5.png)
 
 2. Configurar direcciones IP estáticas en las dos computadoras:
--[x] PC1: 192.168.1.10, Máscara: 255.255.255.0 
+- [x] PC1: 192.168.1.10, Máscara: 255.255.255.0 
 ![Figura 6](imagenes/Parte2_Figura6.jpg)
--[x] PC2: 192.168.1.11, Máscara: 255.255.255.0 
+- [x] PC2: 192.168.1.11, Máscara: 255.255.255.0 
 ![Figura 7](imagenes/Parte2_Figura7.jpg)
 
 3. Verificar la configuración de red en cada PC
--[x] Deshabilitar firewall para permitir ICMP y TCP (que se verá mas adelante)
--[x] Ejecutar ipconfig para confirmar configuración IP.
--[x] Probar la conectividad con ping
+- [x] Deshabilitar firewall para permitir ICMP y TCP (que se verá mas adelante)
+- [x] Ejecutar ipconfig para confirmar configuración IP.
+- [x] Probar la conectividad con ping
 ![Figura 8](imagenes/Parte2_Figura8.jpg)
 
-**Configurar un puerto del switch en modo mirroring y monitorear tráfico**
+###Configurar un puerto del switch en modo mirroring y monitorear tráfico
 
 1. Conectar otra computadora al switch.
--[x] PC3: puerto Fa0/23.
+- [x] PC3: puerto Fa0/23.
 
 2. Configurar port mirroring en el switch:
 ![Figura 9](imagenes/Parte2_Figura9.png)
 
 3. Configurar la tercera PC con software de captura de paquetes
--[x] Instalar y ejecutar Wireshark.
--[x] Seleccionar la interfaz de red de Ethernet 
--[x] Iniciar la captura
+- [x] Instalar y ejecutar Wireshark.
+- [x] Seleccionar la interfaz de red de Ethernet 
+- [x] Iniciar la captura
 
 4. Ejecutar pruebas de conectividad mientras se monitorea
--[x] Filtrar en PC3 tráfico ICMP
--[x] Realizar ping entre PC1 y PC2. 
+- [x] Filtrar en PC3 tráfico ICMP
+- [x] Realizar ping entre PC1 y PC2. 
 ![Figura 10](imagenes/Parte2_Figura10.png)
 
-**Transmitir mensaje entre las computadoras y analizar el tráfico**
+###Transmitir mensaje entre las computadoras y analizar el tráfico
 
 1. Configurar PC1 como servidor
 ![Figura 11](imagenes/Parte2_Figura11.png)
 
 2. Ejecutar nuevas pruebas de conectividad mientras se monitorea
--[x] Filtrar en PC3 tráfico TCP
--[x] Envío de Paquete desde PC2 
+- [x] Filtrar en PC3 tráfico TCP
+- [x] Envío de Paquete desde PC2 
 ![Figura 12](imagenes/Parte2_Figura12.jpg)
--[x] Capturamos el tráfico. 
+- [x] Capturamos el tráfico. 
 ![Figura 13](imagenes/Parte2_Figura13.png)
 ![Figura 14](imagenes/Parte2_Figura14.png)
 
