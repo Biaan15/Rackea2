@@ -164,4 +164,8 @@ Como podemos observar en la figura 8, el router ha resuelto las direcciones IP e
 * `192.168.2.10` corresponde a la dirección IP de h2 que ha sido traducida a la dirección física, correspondiente a la MAC _0002.160C.9383_
 * `192.168.2.12` corresponde a la dirección IP de la puerta de enlace de la interfaz GigabitEthernet0//0/1 (eth1) del mismo router.
 
+En relación a este trabajo práctico, el switch permite que exista una comunicación entre los dispositivos que se encuentran conectados a él a través de sus interfaces, tal es el caso de h1, h2 y h3. El router también está conectado a dicho switch para facilitar la comunicación entre las distintas subredes que se pueden llegar a tener. Lo único que hace es pasar los datos entre los hosts y el router sin la necesidad de tener que procesar las direcciones IP. 
+
+No tiene asignado direcciones IP en sus interfaces debido a que el switch opera en la capa de enlace de datos. Esto implica que no es necesario para el cumplimiento de su función principal de conmutación. Esto significa que los switches trabajan únicamente con direcciones MAC, que son identificadores únicos asociados a las tarjetas de red de los dispositivos conectados. 
+
 
