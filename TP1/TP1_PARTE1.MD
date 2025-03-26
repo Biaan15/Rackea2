@@ -87,3 +87,7 @@ Algunas direcciones multicast en IPv6 están predefinidas para funciones especí
 | `FF05::101` | Grupo de servidores de tiempo NTP. |
 
 # Resultados
+Vamos a realizar un ping desde Cliente 1 hacia Cliente 2 para iniciar un tráfico ICMP y analizar el tráfico de la red, los mensajes y paquetes de la misma.
+
+
+
