@@ -169,3 +169,24 @@ En relación a este trabajo práctico, el switch permite que exista una comunica
 No tiene asignado direcciones IP en sus interfaces debido a que el switch opera en la capa de enlace de datos. Esto implica que no es necesario para el cumplimiento de su función principal de conmutación. Esto significa que los switches trabajan únicamente con direcciones MAC, que son identificadores únicos asociados a las tarjetas de red de los dispositivos conectados. 
 
 
+Así como el switch mantiene una tabla de las direcciones MAC, los dispositivos hosts también tienen una tabla de direcciones, llamada ARP. En la tabla ARP de h1 se lista la dirección IP del dispositivo, la dirección física MAC asociada a tal IP y una columna Type: dynamic.
+
+![Figura 9](imagenes/Parte1_Figura9.png)
+
+Esta tabla significa que h1 tiene registrada una asociación “dinámica” entre una dirección IP y su correspondiente dirección MAC. Se dice que es de este tipo debido al funcionamiento del protocolo ARP, el cuál genera estas asociaciones de manera automática cuando h1 necesita comunicarse con un dispositivo específico dentro de la red local. 
+
+A su vez, la tabla ARP de h2 contiene la dirección IP y MAC de la interfaz eth1, que direcciona del router a los hosts:
+
+![Figura 10](imagenes/Parte1_Figura10.png)
+
+Esto significa que h2 tiene una asociación dinámica registrada entre la dirección IP y la dirección MAC. Esta entrada fue generada automáticamente cuando h2 necesitó comunicarse con la interfaz del router (eth1), que conecta la subred de h2 con otros dispositivos o redes. ARP crea estas asociaciones automáticamente para permitir que los paquetes lleguen al dispositivo correcto dentro de la red local.
+
+A comparación de h2, donde podemos observar contenido dentro de la tabla ARP, podemos notar que h3 posee una tabla vacía debido a que no se ha realizado ninguna comunicación entre Cliente y Cliente. 
+
+![Figura 11](imagenes/Parte1_Figura11.png)
+
+Por otro lado, la tabla ARP del Router contiene las direcciones IP y MAC correspondientes a todas sus interfaces, tanto eth0 como eth1. En dicha tabla se registran no solo las entradas propias de las interfaces, sino también las direcciones de los hosts con los que el router ha establecido comunicación en sus respectivas subredes.
+
+Debido a la falta de comunicación, el dispositivo h3 aún no se encuentra registrado en la tabla ARP de la interfaz eth1.
+
+![Figura 12](imagenes/Parte1_Figura12.png)
