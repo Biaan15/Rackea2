@@ -89,11 +89,11 @@ Algunas direcciones multicast en IPv6 están predefinidas para funciones especí
 # Resultados
 Vamos a realizar un ping desde Cliente 1 hacia Cliente 2 para iniciar un tráfico ICMP y analizar el tráfico de la red, los mensajes y paquetes de la misma.
 
-![Figura 1](imagenes/PingdeCliente1aCliente2.png)
+![Figura 1](imagenes/Parte1_Figura1.png)
 
 Se tomaron diversos mensajes para detectar el tráfico y la comunicación entre dispositivos en la red, analizando protocolos como ICMP y ARP, y documentando los tiempos de respuesta y rutas utilizadas en cada interacción.
 
-![Figura 2](imagenes/FlujoDeComunicaciónEnLaRed.png)
+![Figura 2](imagenes/Parte1_Figura2.png)
 
 En primer lugar, podemos identificar varias comunicaciones ARP, las cuales ocurren entre h1 y el router, así como entre el router y h2. 
 
@@ -104,7 +104,7 @@ Cuando h1 desea enviar un paquete ICMP, que es el paquete que enviamos al realiz
 #### 1. Descubrimiento de la dirección MAC del router
 Antes de enviar el paquete ICMP, h1 debe determinar la dirección MAC de su puerta de enlace predeterminada **(192.168.1.11)**. Para ello, envía una **solicitud ARP** en broadcast (MAC de destino: `FF:FF:FF:FF:FF:FF`)
 
-![Figura 3](imagenes/DetallesdelPDUenh1.png)
+![Figura 3](imagenes/Parte1_Figura3.png)
 
 - **Origen MAC:** `00:11:22:33:44:55` (h1)  
 - **Destino MAC:** `FF:FF:FF:FF:FF:FF` (broadcast)  
@@ -113,7 +113,7 @@ Antes de enviar el paquete ICMP, h1 debe determinar la dirección MAC de su puer
 
 El router, al recibir esta solicitud, responde con un **ARP Reply**, enviando su dirección MAC directamente a h1.  
 
-![Figura 4](imagenes/DetallesdelPDUenRouter5.png)
+![Figura 4](imagenes/Parte1_Figura4.png)
 
 - **Origen MAC:** `00:AA:BB:CC:DD:11` (Router)  
 - **Destino MAC:** `00:11:22:33:44:55` (h1)  
@@ -125,7 +125,7 @@ A partir de este momento, h1 almacena en su **tabla ARP** la correspondencia ent
 #### 2. Descubrimiento de la dirección MAC de h2
 Cuando el router recibe el paquete ICMP de h1, verifica su tabla de enrutamiento y determina que el destino (192.168.2.11) pertenece a una red diferente (192.168.2.0/24). Antes de reenviar el paquete a h2, el router necesita conocer su dirección MAC. Para ello, emite otra **solicitud ARP (ARP Request)** en la segunda red.  
 
-![Figura 5](imagenes/DetallesdelPDUenSwitch0.png)
+![Figura 5](imagenes/Parte1_Figura5.png)
 
 - **Origen MAC:** `00:AA:BB:CC:DD:22` (Router, interfaz en red 192.168.2.0/24)  
 - **Destino MAC:** `FF:FF:FF:FF:FF:FF` (broadcast)  
@@ -134,7 +134,7 @@ Cuando el router recibe el paquete ICMP de h1, verifica su tabla de enrutamiento
 
 Este paquete pasa por el switch, el cual reenvía la trama Ethernet dentro de la red, como veremos más adelante, y luego h2 responde con un **ARP Reply**, enviando su dirección MAC al router:
 
-![Figura 6](imagenes/DetallesDelPDUenh2.png)
+![Figura 6](imagenes/Parte1_Figura6.png)
 
 - **Origen MAC:** `00:66:77:88:99:AA` (h2)  
 - **Destino MAC:** `00:AA:BB:CC:DD:22` (Router)  
@@ -146,7 +146,7 @@ Con esta información, el router actualiza su **tabla ARP** y puede reenviar el 
 Las direcciones IP en los paquetes ICMP reflejan el origen y destino de la comunicación.
 Si analizamos el paquete ICMP enviado de h1, podemos observar como este contiene en su datagrama la dirección IP de origen (192.168.1.10), correspondiente a él mismo, y la dirección IP de destino (192.168.2.10), correspondiente a h2 que se encuentra en la otra subred. 
 
-![Figura 7](imagenes/PDUenh1.png)
+![Figura 7](imagenes/Parte1_Figura7.png)
 
 El router usa su tabla de rutas para decidir por dónde enviar los paquetes. Como h1 y h2 están en redes diferentes, el router debe realizar el proceso mencionado en el punto a).
 
@@ -156,7 +156,7 @@ Como desarrollamos anteriormente el router necesita conocer la dirección MAC de
 
 Finalmente, h2 recibe el paquete ICMP, lo procesa y envía una respuesta siguiendo el mismo proceso en reversa.
 
-![Figura 8](imagenes/DireccionesRouter.png)
+![Figura 8](imagenes/Parte1_Figura8.png)
 
 Como podemos observar en la figura 8, el router ha resuelto las direcciones IP en direcciones MAC que han sido necesarias para realizar la comunicación entre h1 y h2. Situándonos en el router, se aprecian las siguientes direcciones:
 * `192.168.1.10` corresponde a la dirección IP de h1 que ha sido traducida a la dirección física, correspondiente a la MAC _0009.7CA6.CA30_
