@@ -208,4 +208,76 @@ Las utilidades de las direcciones de multicast en IPv4 son:
 1. **Optimización del ancho de banda:** permiten enviar un solo flujo de datos que pueden recibir múltiples destinatarios, reduciendo la carga de la red. Esto es crucial para aplicaciones que demandan un alto ancho de banda, ya que evita la necesidad de enviar múltiples copias de los mismos datos a diferentes destinatarios.
 2. **Aplicaciones de streaming:** el multicast es ideal para las transmisión de video y audio en vivo, como eventos deportivos, conferencias, etc. 
 3. **Actualización de software y distribución de contenido:** este tipo de direcciones facilitan la entrega simultánea de actualizaciones de software y contenido a múltiples dispositivos.
-4. **Videoconferencias y juegos online:** las aplicaciones de videoconferencia y los juegos en línea se benefician enormemente del multicast, ya que permite una comunicación en tiempo real eficiente entre múltiples participantes.  
+4. **Videoconferencias y juegos online:** las aplicaciones de videoconferencia y los juegos en línea se benefician enormemente del multicast, ya que permite una comunicación en tiempo real eficiente entre múltiples participantes.
+
+A continuacion se analiza el tráfico ICMP v3 (IPv6) entre h1 y h3.
+
+![Figura 13](imagenes/Parte1_Figura13.png)
+
+Las comunicaciones NDP tienen como objetivo resolver las direcciones IPv6 en direcciones MAC válidas (direcciones de hardware propias de cada dispositivo). 
+
+En este caso, podemos presenciar en primer lugar un tipo de mensaje llamado **Neighbor Solicitation (NS)**. Este evento ocurre, por ejemplo, donde el origen es Router5 y el destino es Switch0, cuyo propósito es resolver una dirección IPv6 a su dirección MAC o verificar la disponibilidad de un vecino. 
+
+Otro tipo de mensaje que podemos presenciar es **Neighbor Advertisement (NA)**, donde el origen es h3 y el destino es Switch0. Su tarea es responder a una solicitud de vecino con la dirección MAC correspondiente o anunciar un cambio de dirección. 
+
+Además, en la tabla, se encuentra una línea donde el Router5 envía información al Switch0. Esto se debe a que los routers envían mensajes para anunciar prefijos de red, parámetros de configuración o para responder a solicitudes de routers, lo que se conoce como **Router Advertisement (RA)**.
+
+Por último, podemos hacer uso de **Router Solicitation (RS)**, que es cuando los dispositivos (como h2 o h3) envían mensajes a Router5 para solicitar información de configuración.
+
+![Figura 14](imagenes/Parte1_Figura14.png)
+
+NDP es quien resuelve direcciones IPv6 en direcciones MAC, al igual que ARP lo hace para IPv4, por lo que se puede decir que NDP reemplaza a ARP. Sin embargo, la forma en la que operan no es la misma.
+
+ARP opera en la capa de enlace, enviando un broadcast a toda la red para descubrir la dirección MAC, lo que genera mayor tráfico en la red. En cambio, NDP opera en la capa de red, utilizando paquetes ICMPv6 para la resolución de direcciones. En lugar de broadcast, utiliza multicast y unicast reduciendo la carga en la red.
+
+
+![Figura 15](imagenes/Parte1_Figura15.png)
+
+NDP no solo resuelve direcciones MAC, sino que también ofrece otras funcionalidades. 
+
+Similar a ARP, NDP incluye el descubrimiento de vecinos, lo que permite que los dispositivos descubran la MAC de los otros dispositivos en la misma red. Para esto usa multicast dirigido con mensajes ICMPv6. 
+
+Además de ayudar a la comunicación entre hosts, NDP permite el descubrimiento de routers en la red. Con mensajes **Router Solicitation (RS)** a la dirección multicast de routers `FF02::2`, se solicita información de las puertas de enlace de la red. En respuesta, los routers envían un **Router Advertisement (RA)**. Con la información que el router envía, el dispositivo puede autoconfigurarse generando su propia IPv6.
+
+Relacionada con la funcionalidad anterior, NDP además puede detectar direcciones IP duplicadas antes de que un dispositivo las utilice, previniendo conflictos en la red.
+
+Por último, NDP incorpora una funcionalidad para redireccionar el tráfico. Si un router conoce un camino más eficiente hacia un destino, puede notificarlo a los dispositivos mediante un mensaje **Redirect**, optimizando así el enrutamiento dentro de la red.
+
+
+Este reemplazo del broadcast en IPv6 se lleva a cabo implementando **Multicast**, junto con las solicitudes NDP.
+
+En primer lugar, en vez de enviar paquetes a todos los dispositivos con broadcast, IPv6 utiliza direcciones **Multicast** para que solo los nodos interesados reciban la información. 
+
+En segundo lugar, IPv6 utiliza el protocolo **NDP** para la resolución de direcciones MAC, reemplazando el protocolo ARP de IPv4. NDP emplea mensajes ICMPv6 tipo **Neighbor Solicitation** y **Neighbor Advertisement**, que son enviados a direcciones multicast específicas en lugar de broadcast global.
+
+![Figura 16](imagenes/Parte1_Figura16.png)
+
+Como podemos ver, el router, en la interfaz **GigabitEthernet0/0/0**, está registrado en las direcciones de Multicast presentes en la figura. Es por eso que si analizamos el paquete NDP enviado por h1, veremos como en la dirección IPv6 de destino encontramos `FF02::1:FF00:11`, correspondiendo a la dirección Multicast de la interfaz eth0.
+
+![Figura 17](imagenes/Parte1_Figura17.png)
+
+Esta dirección permite en este caso que el router reciba el paquete, ya que está escuchando por esa dirección multicast de nodo solicitado, en lugar de enviarlo a todos los nodos como en el broadcast de IPv4. 
+
+Este enfoque mejora la eficiencia y la escalabilidad de las redes IPv6, reduciendo la congestión y el tráfico innecesario en la red.
+
+Las direcciones IPv6 pueden clasificarse por su alcance. Entre estas clasificaciones encontramos las direcciones: **link-local**, **unique-local** y **global**.
+
+Las direcciones **link-local** son de alcance limitado a un solo enlace o segmento de red, es decir, son válidas únicamente dentro de la red local o subred, sin posibilidad de ser enrutadas más allá del enlace. Se utilizan para la comunicación entre dispositivos en la misma red sin necesidad de usar un router. Están caracterizadas por el prefijo `FE80::/10`. 
+Un uso de estas direcciones es el protocolo de detección de vecinos **NDP**.
+
+Las direcciones **unique-local**, del rango `FC00::/7`, son el equivalente a direcciones privadas de IPv4. Se utilizan para redes privadas y no enrutables en internet, pero sí entre dispositivos dentro de una organización. Se utilizan, por ejemplo, en empresas que tienen sucursales en distintas ciudades, para crear sus redes internas, comunicando sus servidores de manera segura.
+
+Finalmente, las direcciones **global unicast**, del rango `2000::/3` o `2001::/3`, son direcciones públicas, para la comunicación global. Son únicas en todo Internet y se asignan por proveedores **ISP**. De esta forma, pueden ser enrutadas a través de múltiples redes y permiten la comunicación por Internet. Se utilizan, por ejemplo, para servidores web que alojan páginas accesibles para todo el mundo.
+
+---
+
+### Discusión y conclusiones
+
+La configuración y el análisis de redes dual stack permiten comprender los desafíos y ventajas del protocolo IPv6 ante el protocolo IPv4. A través del estudio de ARP, NDP e ICMP, se evidencia la evolución de los protocolos de comunicación y su impacto en la eficiencia de la transmisión de datos.
+
+---
+
+### Referencias
+
+[1] Direcciones de red IPv6. Recuperado el 15 de marzo de 2025, de <https://www.sapalomera.cat/moodlecf/RS/1/course/module8/8.2.5.1/8.2.5.1.html>
+
