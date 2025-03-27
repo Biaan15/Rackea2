@@ -99,7 +99,7 @@ En primer lugar, podemos identificar varias comunicaciones ARP, las cuales ocurr
 
 El primer paso para realizar la comunicación entre h1 y h2 es el proceso de resolución ARP entre dichos hosts, el cual transforma las direcciones lógicas (IP) a físicas (MAC)
 
-Cuando h1 desea enviar un paquete ICMP, que es el paquete que enviamos al realizar el comando ping a h2, primero debe conocer la dirección MAC del destino. Sin embargo, dado que h1 y h2 están en redes diferentes, la comunicación no puede ser directa y debe pasar a través del router, que actúa como intermediario. Este proceso involucra múltiples intercambios ARP tal como lo evidenciamos en la figura 3:
+Cuando h1 desea enviar un paquete ICMP, que es el paquete que enviamos al realizar el comando ping a h2, primero debe conocer la dirección MAC del destino. Sin embargo, dado que h1 y h2 están en redes diferentes, la comunicación no puede ser directa y debe pasar a través del router, que actúa como intermediario.
 
 #### 1. Descubrimiento de la dirección MAC del router
 Antes de enviar el paquete ICMP, h1 debe determinar la dirección MAC de su puerta de enlace predeterminada **(192.168.1.11)**. Para ello, envía una **solicitud ARP** en broadcast (MAC de destino: `FF:FF:FF:FF:FF:FF`)
@@ -148,23 +148,19 @@ Si analizamos el paquete ICMP enviado de h1, podemos observar como este contiene
 
 ![Figura 7](imagenes/Parte1_Figura7.png)
 
-El router usa su tabla de rutas para decidir por dónde enviar los paquetes. Como h1 y h2 están en redes diferentes, el router debe realizar el proceso mencionado en el punto a).
-
 Cuando el router recibe el paquete proveniente de h1, analiza la dirección IP de destino correspondiente a h2 (192.168.2.10) y revisa su tabla de enrutamiento para determinar la interfaz de salida, la cual en este caso es la correspondiente a la red 192.168.2.0/24 que se encuentra en la interfaz eth1.
 
 Como desarrollamos anteriormente el router necesita conocer la dirección MAC de h2 para enviar el paquete. Si no la tiene en su tabla ARP, realiza el mismo proceso de **ARP request** y **ARP reply**, completa la tabla y envía el paquete.
 
-Finalmente, h2 recibe el paquete ICMP, lo procesa y envía una respuesta siguiendo el mismo proceso en reversa.
-
 ![Figura 8](imagenes/Parte1_Figura8.png)
 
-Como podemos observar en la figura 8, el router ha resuelto las direcciones IP en direcciones MAC que han sido necesarias para realizar la comunicación entre h1 y h2. Situándonos en el router, se aprecian las siguientes direcciones:
+Como podemos observar en la figura, el router ha resuelto las direcciones IP en direcciones MAC que han sido necesarias para realizar la comunicación entre h1 y h2. Situándonos en el router, se aprecian las siguientes direcciones:
 * `192.168.1.10` corresponde a la dirección IP de h1 que ha sido traducida a la dirección física, correspondiente a la MAC _0009.7CA6.CA30_
 * `192.168.1.11` corresponde a la dirección IP de la puerta de enlace de la interfaz GigabitEthernet0//0/0 (eth0) del mismo router.
 * `192.168.2.10` corresponde a la dirección IP de h2 que ha sido traducida a la dirección física, correspondiente a la MAC _0002.160C.9383_
 * `192.168.2.12` corresponde a la dirección IP de la puerta de enlace de la interfaz GigabitEthernet0//0/1 (eth1) del mismo router.
 
-En relación a este trabajo práctico, el switch permite que exista una comunicación entre los dispositivos que se encuentran conectados a él a través de sus interfaces, tal es el caso de h1, h2 y h3. El router también está conectado a dicho switch para facilitar la comunicación entre las distintas subredes que se pueden llegar a tener. Lo único que hace es pasar los datos entre los hosts y el router sin la necesidad de tener que procesar las direcciones IP. 
+En cuanto al switch, este permite que exista una comunicación entre los dispositivos que se encuentran conectados a él a través de sus interfaces, tal es el caso de h1, h2 y h3. El router también está conectado a dicho switch para facilitar la comunicación entre las distintas subredes que se pueden llegar a tener. Lo único que hace es pasar los datos entre los hosts y el router sin la necesidad de tener que procesar las direcciones IP. 
 
 No tiene asignado direcciones IP en sus interfaces debido a que el switch opera en la capa de enlace de datos. Esto implica que no es necesario para el cumplimiento de su función principal de conmutación. Esto significa que los switches trabajan únicamente con direcciones MAC, que son identificadores únicos asociados a las tarjetas de red de los dispositivos conectados. 
 
@@ -181,7 +177,7 @@ A su vez, la tabla ARP de h2 contiene la dirección IP y MAC de la interfaz eth1
 
 Esto significa que h2 tiene una asociación dinámica registrada entre la dirección IP y la dirección MAC. Esta entrada fue generada automáticamente cuando h2 necesitó comunicarse con la interfaz del router (eth1), que conecta la subred de h2 con otros dispositivos o redes. ARP crea estas asociaciones automáticamente para permitir que los paquetes lleguen al dispositivo correcto dentro de la red local.
 
-A comparación de h2, donde podemos observar contenido dentro de la tabla ARP, podemos notar que h3 posee una tabla vacía debido a que no se ha realizado ninguna comunicación entre Cliente y Cliente. 
+A comparación de h2, donde podemos observar contenido dentro de la tabla ARP, podemos notar que h3 posee una tabla vacía debido a que no se ha realizado ninguna comunicación con este dispositivo.
 
 ![Figura 11](imagenes/Parte1_Figura11.png)
 
@@ -210,7 +206,7 @@ Las utilidades de las direcciones de multicast en IPv4 son:
 3. **Actualización de software y distribución de contenido:** este tipo de direcciones facilitan la entrega simultánea de actualizaciones de software y contenido a múltiples dispositivos.
 4. **Videoconferencias y juegos online:** las aplicaciones de videoconferencia y los juegos en línea se benefician enormemente del multicast, ya que permite una comunicación en tiempo real eficiente entre múltiples participantes.
 
-A continuacion se analiza el tráfico ICMP v3 (IPv6) entre h1 y h3.
+A continuacion, se analiza el tráfico ICMP v3 (IPv6) entre h1 y h3.
 
 ![Figura 13](imagenes/Parte1_Figura13.png)
 
