@@ -3,17 +3,8 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-----------------PARTE 4 LUEGO BORRO ESTO ------------------------------------------------------------------------------------------------------------------------------
+---
+## PARTE 4 LUEGO BORRO ESTO 
 
 Se analiza el rendimiento **TCP** y **UDP** bajo dos configuraciones: _Cliente_ y _Servidor_.
 Las pruebas se llevaron a cabo utilizando la herramienta iPerf3, que permitió establecer conexiones específicas entre las direcciones IP asignadas al cliente y al servidor. En este caso, el **Cliente** (tanto TCP como UDP) inició la comunicación desde la IP `10.10.10.11`, mientras que el **Servidor** (tanto TCP como UDP) respondió desde la IP `10.10.10.10`.
@@ -57,4 +48,4 @@ En las pruebas realizadas con los protocolos UDP y TCP, se observan diferencias 
 
 Por otro lado, **UDP** registró una pérdida mínima de paquetes y un promedio bajo de jitter. UDP prioriza la velocidad y la simplicidad sobre la confiabilidad, lo que lo hace más susceptible a la pérdida de datos en redes más dinámicas. 
 
-----------------------------fin-------------------------------------------------------------------------------------------------------------------------------------
+---
