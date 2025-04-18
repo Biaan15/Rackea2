@@ -15,7 +15,7 @@ ping 10.10.10.10
 ping 10.10.10.11
 ```
 
-![Figura 3](imagenes/Ping_H2.png)
+![Figura 3](imagenes/Ping_H2(1).png)
 ![Figura 4](imagenes/Ping_H1.png)
 
 Como se puede observar, nuestro grupo se configuró en la red 10.10.10.x. La propuesta de direccionamiento por grupo planteada es:
@@ -48,6 +48,7 @@ Para permitir esta comunicación entre routers, es necesario configurar interfac
 Además de las IP asignadas a cada host, es importante que cada dispositivo debe tener como gateway la dirección IP de la interfaz que conecta al switch de su grupo.
 
 En cada PC se asignó una dirección IP fija, junto con su máscara de subred y default gateway, de acuerdo al grupo al que pertenece. Ejemplo de la configuración en una de ellas:
+
 ![Figura 5](imagenes/simulacion/config_IP_host.png)
 
 En los routers, la configuración se realizó mediante línea de comandos. Se habilitaron las interfaces necesarias y se les asignaron las direcciones IP correspondientes a cada subred, según el esquema previamente definido. Ejemplo de uno de los routers:
@@ -56,6 +57,7 @@ En los routers, la configuración se realizó mediante línea de comandos. Se ha
 
 Con esta configuración básica, se procedió a realizar pruebas de conectividad mediante el envío de mensajes ICMP (ping) entre distintos dispositivos de la red. Los resultados son:
 Entre computadoras de una misma subred, la comunicación fue exitosa, lo que confirma que la configuración IP local y la conexión a través del switch están correctamente establecidas. Ej de ping desde PC0 hacia PC1:
+
 ![Figura 7](imagenes/simulacion/ping_PC0_PC1.png)
 
 Entre computadoras de diferentes subredes, los intentos de ping fallaron. Esto se debe a que, si bien los routers ya tienen sus interfaces configuradas, aún no se han definido las rutas estáticas que les permitan reenviar paquetes hacia redes que no conocen directamente. Al hacer ping de PC0 a PC2 ocurre:
@@ -77,6 +79,7 @@ Con esto le estamos indicando, en la primera linea, que si el R2 recibe un paque
 Con las rutas ya definidas en cada router probamos nuevamente conexión entre PC0 (grupo 0) y PC2 (grupo 1) y obtenemos:
 
 ![Figura 10](imagenes/simulacion/ping_PC0_PC2_conrutas.png)
+
 De esta forma finalizamos la simulación de la primera etapa, para garantizar que todos los hosts de las distintas redes puedan establecer comunicación entre ellos. 
 
 
