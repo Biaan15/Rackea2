@@ -55,12 +55,13 @@ En los routers, la configuración se realizó mediante línea de comandos. Se ha
 
 ![Figura 6](imagenes/simulacion/config_Router.png)
 
-Con esta configuración básica, se procedió a realizar pruebas de conectividad mediante el envío de mensajes ICMP (ping) entre distintos dispositivos de la red. Los resultados son:
-Entre computadoras de una misma subred, la comunicación fue exitosa, lo que confirma que la configuración IP local y la conexión a través del switch están correctamente establecidas. Ej de ping desde PC0 hacia PC1:
+Con esta configuración básica, se procedió a realizar pruebas de conectividad mediante el envío de mensajes ICMP (ping) entre distintos dispositivos de la red. Los resultados fueron:
+
+- Entre computadoras de una misma subred, la comunicación fue exitosa, lo que confirma que la configuración IP local y la conexión a través del switch están correctamente establecidas. Ej de ping desde PC0 hacia PC1:
 
 ![Figura 7](imagenes/simulacion/ping_PC0_PC1.png)
 
-Entre computadoras de diferentes subredes, los intentos de ping fallaron. Esto se debe a que, si bien los routers ya tienen sus interfaces configuradas, aún no se han definido las rutas estáticas que les permitan reenviar paquetes hacia redes que no conocen directamente. Al hacer ping de PC0 a PC2 ocurre:
+- Entre computadoras de diferentes subredes, los intentos de ping fallaron. Esto se debe a que, si bien los routers ya tienen sus interfaces configuradas, aún no se han definido las rutas estáticas que les permitan reenviar paquetes hacia redes que no conocen directamente. Al hacer ping de PC0 a PC2 ocurre:
 
 	![Figura 8](imagenes/simulacion/ping_PC0_PC2_sinrutas.png)
 
