@@ -83,11 +83,118 @@ Con las rutas ya definidas en cada router probamos nuevamente conexión entre PC
 
 De esta forma finalizamos la simulación de la primera etapa, para garantizar que todos los hosts de las distintas redes puedan establecer comunicación entre ellos. 
 
+Para continuar, dejamos atrás la simulación para volver al laboratorio. En esta etapa, descargamos la herramienta iPerf3 para realizar pruebas de rendimiento de la red desde su sitio oficial: [iperf.fr](https://iperf.fr). 
+
+Antes de mostrar el uso de la misma, se van a resumir los principales comandos para realizar dichas pruebas de rendimiento. Esta herramienta permite medir la calidad de la conexión mediante pruebas configuradas por distintos protocolos, tamaños de paquetes, frecuencia y ancho de banda.
+
+Para ejecutar pruebas de rendimiento de red, iPerf3 usa un modo cliente-servidor:  
+- Un dispositivo actúa como **servidor** (`iperf3 -s`).  
+- Otro dispositivo se conecta como **cliente** (`iperf3 -c <IP_DEL_SERVIDOR>`).  
+
+### 1. Protocolo TCP y UDP
+- **TCP** (por defecto):  
+  ```sh
+  iperf3 -c <IP_SERVIDOR>
+  ```
+- **UDP**:  
+  ```sh
+  iperf3 -c <IP_SERVIDOR> -u
+  ```
 
 
+### 2. Número y tamaño de paquetes 
+- **Especificar el tamaño de los paquetes (solo UDP)** (ej: 1400 bytes):  
+  ```sh
+  iperf3 -c <IP_SERVIDOR> -u -l 1400
+  ```
+- **Número de flujos simultáneos (hilos)** (ej: 4 flujos):  
+  ```sh
+  iperf3 -c <IP_SERVIDOR> -P 4
+  ```
 
----
-## PARTE 4 LUEGO BORRO ESTO 
+
+### 3. Frecuencia/Tiempo
+- **Duración de la prueba** (ej: 30 segundos):  
+  ```sh
+  iperf3 -c <IP_SERVIDOR> -t 30
+  ```
+- **Intervalo de reporte (ej: cada 2 segundos)**:  
+  ```sh
+  iperf3 -c <IP_SERVIDOR> -i 2
+  ```
+
+
+### 4. Ancho de banda
+- **Limitar el ancho de banda** (ej: 5 Mbps en UDP):  
+  ```sh
+  iperf3 -c <IP_SERVIDOR> -u -b 5M
+  ```
+- **Modo reverso (el servidor envía datos al cliente)**:  
+  ```sh
+  iperf3 -c <IP_SERVIDOR> -R
+  ```
+
+Una vez conocido el funcionamiento de dicha herramienta, se procede a configurar Wireshark  para capturar y analizar el tráfico generado durante las pruebas con la herramienta iPerf3.
+
+### Protocolo TCP
+**Servidor:**
+
+![Figura 11](imagenes/TCP_Servidor.png)
+
+**Cliente:**
+
+![Figura 12](imagenes/TCP_Cliente.png)
+
+
+### Protocolo UDP
+**Servidor:**
+
+![Figura 13](imagenes/UDP_Servidor.png)
+
+**Cliente:**
+
+![Figura 14](imagenes/UDP_Cliente.png)
+
+### Captura de Tráfico en Wireshark
+Se puede apreciar tanto los paquetes TCP como los paquetes UDP enviados de un host al otro al realizar la prueba de iPerf:
+
+### **Tráfico TCP**
+
+![Figura 15](imagenes/Trafico_TCP.png)
+
+En esta imagen se puede ver:
+- Comunicación **TCP** del cliente (`10.10.10.11`) al servidor (`10.10.10.10`), en el puerto `5201`, que es el puerto por defecto de iPerf3.
+- Se puede ver el **three-way handshake TCP**:
+  - SYN (`Seq=0`) del cliente.
+  - SYN-ACK del servidor.
+  - ACK final del cliente.
+
+  - Posteriormente, se envían paquetes de datos (tamaño 1460 bytes, típico de TCP con MSS=1460).
+  - Numerosos ACKs del servidor para cada segmento recibido.
+
+### **Tráfico UDP**
+
+**Filtro utilizado en UDP:**
+```text
+ip.src == 10.10.10.11 && ip.dst == 10.10.10.10
+```
+
+![Figura 16](imagenes/Trafico_UDP.png)
+
+Aquí se puede observar:	
+- Se están utilizando datagramas **UDP** desde el puerto `58895` hacia el puerto `5201` también
+- Los paquetes están marcados como `Fragmented IP protocol`, lo que indica que los datagramas son demasiado grandes para la MTU (Maximum Transmission Unit) y se están fragmentando a nivel IP.
+- Varios fragmentos con el mismo ID (`ID=379a`), enviados secuencialmente (offsets: 0, 1480, 2960...).
+- Los paquetes de iPerf3 en modo UDP no requieren ACK (a diferencia del TCP), por eso sólo hay tráfico unidireccional en este protocolo.
+
+Como iPerf3 envía datagramas de 8192 bytes por UDP y excede el máximo que puede transmitirse en una sola trama de red (típico de 1500 bytes), el paquete IP se divide en fragmentos más pequeños:
+
+1. Cada fragmento contiene una parte del mensaje original.
+2. Todos los fragmentos comparten el mismo `Identification` (por ejemplo, `0x379a`).
+3. Cada fragmento tiene un `Fragment Offset` indicando su posición en el datagrama original.
+4. El último fragmento tiene el flag "More fragments" en 0.
+
+Este proceso ocurre en la capa de red (IP) y no en la capa de transporte (como UDP o TCP).
 
 Se analiza el rendimiento **TCP** y **UDP** bajo dos configuraciones: _Cliente_ y _Servidor_.
 Las pruebas se llevaron a cabo utilizando la herramienta iPerf3, que permitió establecer conexiones específicas entre las direcciones IP asignadas al cliente y al servidor. En este caso, el **Cliente** (tanto TCP como UDP) inició la comunicación desde la IP `10.10.10.11`, mientras que el **Servidor** (tanto TCP como UDP) respondió desde la IP `10.10.10.10`.
@@ -130,5 +237,3 @@ En ambas pruebas UDP, se observó una pérdida mínima de paquetes *(0.63%)*. Es
 En las pruebas realizadas con los protocolos UDP y TCP, se observan diferencias notables en su desempeño y características. **TCP** garantiza la entrega de datos mediante retransmisiones y confirmaciones, lo que resultó en la ausencia de pérdida de paquetes en las pruebas. Su desempeño mostró estabilidad en el ancho de banda y tamaño de transferencia, confirmando su fiabilidad en entornos controlados. 
 
 Por otro lado, **UDP** registró una pérdida mínima de paquetes y un promedio bajo de jitter. UDP prioriza la velocidad y la simplicidad sobre la confiabilidad, lo que lo hace más susceptible a la pérdida de datos en redes más dinámicas. 
-
----
