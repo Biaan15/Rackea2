@@ -75,7 +75,7 @@ Ej de aplicación, sobre el router 2:
 
 ![Figura 9](imagenes/simulacion/rutas_estaticas_R2.png)
 
-Con esto le estamos indicando, en la primera linea, que si el R2 recibe un paquete con destino a la red del grupo 1 (10.10.10.0/24), debe enviarlo al siguiente salto, que es la IP 172.16.1.5, correspondiente a la interfaz del R0 que apunta hacia R2.
+Con esto le estamos indicando, en la primera linea, que si el R2 recibe un paquete con destino a la red del grupo 0 (10.10.10.0/24), debe enviarlo al siguiente salto, que es la IP 172.16.1.5, correspondiente a la interfaz del Router0 que apunta hacia donde estamos, Router2.
 
 Con las rutas ya definidas en cada router probamos nuevamente conexión entre PC0 (grupo 0) y PC2 (grupo 1) y obtenemos:
 
