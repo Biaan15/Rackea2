@@ -1,3 +1,42 @@
+# Trabajo Práctico N°2: 
+# Topologías multi-path y evaluación de performance en redes
+
+**Nombres**  
+_Jorge A. Arbach_
+_Bianca A. Fraga_
+_Sol A. Nou_
+_Felipe Pillichody_
+
+**Rackea2**
+
+**Universidad Nacional de Córdoba**  
+**Redes de Computadoras**
+**Profesores**: Santiago Henn   
+**Fecha**: Jueves 17/04/2025
+
+---
+
+### Información de los autores
+ 
+- **Información de contacto**: _jorge.arbach@mi.unc.edu.ar_, _bianca.fraga@mi.unc.edu.ar_, _felipe.pillichody@mi.unc.edu.ar_, _sol.nou@mi.unc.edu.ar_
+---
+
+## Resumen
+
+En este informe se presenta el desarrollo del Trabajo Práctico N°2, cuyo objetivo principal fue analizar el rendimiento de una red bajo distintos escenarios de conectividad utilizando herramientas como `iperf3` y `Wireshark`. Se configuraron dispositivos con direcciones IP fijas, se ejecutaron pruebas de conectividad y rendimiento entre distintos grupos de computadoras, y se documentaron los resultados mediante capturas. Además, se observaron las diferencias entre los protocolos TCP y UDP y se analizaron aspectos clave como el ancho de banda, duración de las pruebas y pérdida de paquetes.
+
+**Palabras clave**:_Topología, TCP/UDP, iperf3, rendimiento, Multi-path_
+
+---
+
+## Introducción
+
+En el contexto del estudio de redes de computadoras, comprender el comportamiento del tráfico y la eficiencia en diferentes topologías y configuraciones es fundamental. Este trabajo se enfocó en la implementación práctica de una red con múltiples caminos (`multi-path`), permitiendo evaluar el rendimiento y comportamiento de los protocolos TCP y UDP. Utilizando herramientas de análisis como `iperf3` y `Wireshark`, se realizaron mediciones que permiten entender cómo influyen distintos parámetros en la calidad del servicio de la red.
+
+
+---
+
+
 ## Resultados
 
 En primer lugar se configuraron manualmente las direcciones IP en los dispositivos participantes. Cada grupo de trabajo cuenta con su propia red local. Dentro de cada red, los dispositivos (PCs) están conectados a un mismo switch, el cual a su vez se conecta a un router que actúa como puerta de enlace hacia otras redes.
