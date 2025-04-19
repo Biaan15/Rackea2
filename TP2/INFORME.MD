@@ -236,4 +236,47 @@ En ambas pruebas UDP, se observó una pérdida mínima de paquetes *(0.63%)*. Es
 
 En las pruebas realizadas con los protocolos UDP y TCP, se observan diferencias notables en su desempeño y características. **TCP** garantiza la entrega de datos mediante retransmisiones y confirmaciones, lo que resultó en la ausencia de pérdida de paquetes en las pruebas. Su desempeño mostró estabilidad en el ancho de banda y tamaño de transferencia, confirmando su fiabilidad en entornos controlados. 
 
-Por otro lado, **UDP** registró una pérdida mínima de paquetes y un promedio bajo de jitter. UDP prioriza la velocidad y la simplicidad sobre la confiabilidad, lo que lo hace más susceptible a la pérdida de datos en redes más dinámicas. 
+Por otro lado, **UDP** registró una pérdida mínima de paquetes y un promedio bajo de jitter. UDP prioriza la velocidad y la simplicidad sobre la confiabilidad, lo que lo hace más susceptible a la pérdida de datos en redes más dinámicas.
+
+Por último, se realizó esta misma prueba de rendimiento con la herramienta de iPerf3, pero hacia un servidor externo propuesto en clase:
+
+![Figura 17](imagenes/ServidorExterno.png)
+
+### Parámetros clave
+- **Duración de la prueba:** 10.13 segundos
+- **Ancho de banda promedio:**
+  - **Sender:** 3.67 Mbits/sec
+  - **Receiver:** 3.61 Mbits/sec
+- **Tamaño total transferido:** aproximadamente 4.36–4.38 MB
+- **Tamaño promedio de paquetes:**  entre 256 y 768 KB..
+
+
+### Comparación con el servidor local
+
+| Parámetro                    | **Servidor local**            | **Servidor externo**             |
+|-----------------------------|-------------------------------|----------------------------------|
+| **Duración**                | 10 segundos                   | 10.13 segundos                   |
+| **Ancho de banda promedio** | 896 Mbits/sec                 | 3.67 Mbits/sec                   |
+| **Transferencia total**     | 1.04 GBytes                   | 4.36 MBytes                      |
+| **Tamaño de paquetes**      | 113 MBytes/s (muy alto)       | 256–768 KBytes/s (bajo)          |
+| **Pérdida de paquetes**     | No visible                    | No visible (pero posible por TCP)|
+| **Proximidad**              | Mismo switch (LAN)            | Red externa (WAN, Internet)      |
+
+
+- El **ancho de banda hacia el servidor externo es drásticamente menor** (3.67 Mbps vs 896 Mbps), lo que evidencia las limitaciones de una red WAN comparada con una red LAN.
+- **No se observan pérdidas de paquetes directamente**, pero la diferencia de rendimiento del servidor externo indica a efectos del control de congestión de TCP, como latencia alta y posibles restricciones de red.
+- **El tamaño promedio de paquetes es mucho menor** en la prueba externa, lo que también puede influir en el rendimiento.
+
+
+---
+
+## Discusión y Conclusiones
+La práctica permitió adquirir experiencia en el diseño y análisis de redes multi-path en entornos físicos. Se comprobó cómo diferentes configuraciones afectan el rendimiento de la red, y se validaron los conceptos teóricos sobre los protocolos TCP y UDP. El uso de iperf3 y Wireshark fue de suma importancia para la medición de parámetros como el throughput, la latencia y la pérdida de paquetes. En particular, se observó cómo configuraciones agresivas en UDP pueden saturar la red y provocar pérdida de información, mientras que TCP se adapta mejor a las condiciones del canal, aunque con mayor overhead debido a su orientación a la conexión (acuse de recibo).
+
+
+## Referencias
+
+- [1] Direcciones de red IPv6. Recuperado el 10 de abril de 2025, de https://www.sapalomera.cat/moodlecf/RS/1/course/module8/8.2.5.1/8.2.5.1.html
+
+- [2] Sitio oficial de iperf3. Recuperado el 3 de abril de 2025, de https://iperf.fr
+
