@@ -49,15 +49,15 @@ Con estos criterios definidos, se planteó el direccionamiento IP de toda la red
 
 Los enlaces entre routers utilizan las siguientes subredes:
 
-![Figura 2](punto2_redesinterfaces.png)
+![Figura 2](imagenes/punto2_redesinterfaces.png)
 
 	Para los hosts, se definieron las siguientes subredes y direcciones IPv4 específicas para cada computadora:
 
-![Figura 3](punto2_host.png)
+![Figura 3](imagenes/punto2_host.png)
 
 	Finalmente, la asignación de direcciones IP a cada interfaz de los routers quedó organizada de la siguiente manera:
 
-![Figura 4](punto2_tablainterfaces.png)
+![Figura 4](imagenes/punto2_tablainterfaces.png)
 
 
 ## Habilitar protocolo OSPF
@@ -66,30 +66,30 @@ Los enlaces entre routers utilizan las siguientes subredes:
 
 Por ejemplo, desde el router 2, las redes vecinas que tiene son el enlace a R1 (`192.168.1.0`), el enlace con R3 (`192.168.1.64`) y el enlace con S1 (`10.0.0.0`). Configuramos entonces:
 
-![Figura 5](punto3_conf_ospf_r2.png)
+![Figura 5](imagenes/punto3_conf_ospf_r2.png)
 
 Para verificar la conexión punto a punto hacemos ping a una computadora en otra red, de H1 a H4, observando el correcto ruteo:
 
-![Figura 5](punto3_pingH1_H4.png)
+![Figura 5](imagenes/punto3_pingH1_H4.png)
 
 
 Para ver tabla de enrutamiento podemos hacer: ´´´show ip route´´´, donde tenemos conexiones _C (red), L (host) y O (conocidas con OSPF)_. También podemos filtrar exclusivamente rutas OSPF con ´´´show ip route OSPF´´´. En el router 1, la tabla de enrutamiento quedó de la siguiente manera:
  
-![Figura 6](punto3_rutas_R1.png)
+![Figura 6](imagenes/punto3_rutas_R1.png)
 
 
 Podemos observar también las redes que el router está notificando con:
 
 
-![Figura 7](punto5.png)
+![Figura 7](imagenes/punto5.png)
 
 
 Como mencionamos anteriormente, la LSDB es el lugar donde OSPF almacena toda la topología que ha aprendido del área.  Es usada para calcular las rutas más cortas. Mediante el comando ´´´show ip ospf database´´´, se muestra los **LSAs (Link State Advertisements)** que el router conoce, junto con otro tipo de información como el **router ID**, sus enlaces, costos, etc. Esta base debe ser igual para todos los routers de una misma área.
 Por ejemplo, al ejecutar el comando en _Router1_ y _Router2_ (tal como se muestran en las imágenes), observamos que la información almacenada es idéntica, asegurando la estabilidad del enrutamiento OSPF en la red.
 
-![Figura 8](punto5b_R1.png)
+![Figura 8](imagenes/punto5b_R1.png)
 
-![Figura 9](punto5b_R2.png)
+![Figura 9](imagenes/punto5b_R2.png)
 
 Se puede observar como el mismo comando en ambos routers nos devuelve la misma información, tal como era esperado.
 
@@ -104,19 +104,19 @@ En este punto, se busca identificar y analizar los mensajes intercambiados por O
 
 Estos mensajes son esenciales para asegurar que los routers puedan intercambiar información de manera eficiente y que la topología OSPF se propague de manera adecuada en la red. Visualizamos estos mensajes que se propagan de forma constante periódicamente:
 
-![Figura 7](punto4_paquetes_ospf.png)
+![Figura 7](imagenes/punto4_paquetes_ospf.png)
 
 Vemos el paquete que mandó el Router 5 hacia su vecino Router 3:
 
-![Figura 8](punto4_hello_package_R5_haciaR3.png)
+![Figura 8](imagenes/punto4_hello_package_R5_haciaR3.png)
 
 Al ser un vecino ya conocido anteriormente y no tener modificaciones, lo único que hace es resetear el temporizador. Luego, el Router 3 le envía una respuesta al Router 5 de la forma:
 
-![Figura 9](punto4_HELLO_rta_R5_haciaR3.png)
+![Figura 9](imagenes/punto4_HELLO_rta_R5_haciaR3.png)
 
 	Otro caso para analizar es cómo esos paquetes _Hello_ también se envían hacia las computadoras. Estos host no ejecutan OSPF ni participan en el proceso de establecimiento de vecindades de OSPF, por lo que el paquete se descarta.
 
-![Figura 10](punto4_hello_S1_haciaPC1.png)
+![Figura 10](imagenes/punto4_hello_S1_haciaPC1.png)
 
 ## Segmentación por áreas
 En OSPF, **segmentar por áreas** significa dividir una red grande en varias secciones más pequeñas llamadas **áreas** para organizar y optimizar el proceso de enrutamiento.
@@ -154,19 +154,19 @@ Se concluye que:
 **R4 y R5** comparten únicamente la LSDB de **Área 2**, y aprenden las rutas externas a su área como **O IA** a través de **R3**.
 Si leemos las entradas LSDB en un router de cada una de las áreas podemos ver:
 **Área 1**
-![Figura 14](punto6_area1.png)
+![Figura 14](imagenes/punto6_area1.png)
 
 **Área 2**
-![Figura 15](punto6_area2.png)
+![Figura 15](imagenes/punto6_area2.png)
 
 El análisis de la LSDB en **Área 1** y **Área 2** muestra diferencias clave en la propagación de información dentro del protocolo OSPF. Ambas áreas contienen _Router Link States_ y _Network Link States_, pero también incluyen _Summary LSAs_, lo que confirma el intercambio de rutas entre áreas.
 
 Si bien **Área 2** gestiona un mayor flujo de información debido a la cantidad de routers que la conforman y su conexión con **Área 0**, **Área 1** también participa en la redistribución de rutas inter-área, recibiendo información a través de los ABRs (R2 y R3). Esta interacción entre áreas permite una administración eficiente del enrutamiento y optimiza el tráfico de la red.
 
 **Área 0**
-![Figura 16](punto6_area0_primeracap.png)
+![Figura 16](imagenes/punto6_area0_primeracap.png)
 
-![Figura 17](punto6_area0_parte2.png)
+![Figura 17](imagenes/punto6_area0_parte2.png)
 
 
 	Una forma de verificar la funcionalidad OSPF es ver desde el router _R2_ y consultar la información acerca de los vecinos _R1_ y _R3_. Por lo tanto, obtenemos:
@@ -182,7 +182,7 @@ Estos roles aseguran la estabilidad del enrutamiento OSPF, facilitando la sincro
 
 	Por último, en el router _R2_ consultamos la información sobre las operaciones del protocolo de enrutamiento:
 
-![Figura 7](punto7b.png)
+![Figura 7](imagenes/punto7b.png)
 
 Esta imagen revela que el router _R2_ opera como un **Area Border Router (ABR)**, participando en la comunicación entre múltiples áreas OSPF, tal como lo diseñamos. Se destacan parámetros esenciales **Shortest Path First (SPF)**, como los tiempos de ejecución y actualización de LSAs, lo que garantiza una eficiente propagación de información y estabilidad en la red.
 
@@ -200,32 +200,32 @@ En el ambiente de simulación que se utilizó, de momento todos los valores de a
 
 En este punto haremos, desde el Router 2, un traceroute a la dirección de H5. 
 
-![Figura 18](punto8_costodefecto.PNG)
+![Figura 18](imagenes/punto8_costodefecto.PNG)
 
 
 La **salida del traceroute** confirma que los paquetes atraviesan **tres hops** antes de alcanzar H5, validando la propagación de rutas en la LSDB. La baja latencia observada en cada salto sugiere que la red opera de manera estable, sin retrasos significativos en la transmisión de datos.
 
 	Por esta salida, podemos interpretar que la ruta fue:
 
-![Figura 19](punto8_traceroute1.PNG)
+![Figura 19](imagenes/punto8_traceroute1.PNG)
 
 
 Esta imagen muestra la topología de la red, destacando la interconexión entre **Área 1, Área 0 y Área 2**, con **R2** como punto de inicio y **H5** como destino final. La segmentación de la red y la existencia de ABRs como R2 y R3 permiten la redistribución de rutas entre áreas a través de **Área 0 (Backbone)**. 
 
 Luego, configuraremos el enlace entre R3 y R5 con un costo de 20, para ver cómo afecta al hacer un traceroute desde el mismo router. El costo de 20 fue elegido de manera arbitraria, y de esta forma se anula el cálculo en base al ancho de banda.  La modificación se realiza con:
 
-![Figura 20](punto8_cambiarCosto.png)
+![Figura 20](imagenes/punto8_cambiarCosto.png)
 
 	Como vemos en la tercer línea de la siguiente captura, el costo fue cambiado a 20 :
 
-![Figura 21](punto8_visualizacion_costo.png)
+![Figura 21](imagenes/punto8_visualizacion_costo.png)
 
 	Ahora la salida de ´´´traceroute 10.128.0.2´´ desde el mismo origen, dado que el costo del enlace R3-R4 ha aumentado, se puede observar que se evita ese camino, obteniendo:
 
-![Figura 22](punto8_costoAlto.PNG)
+![Figura 22](imagenes/punto8_costoAlto.PNG)
 
 
-![Figura 23](punto8_traceroute2.PNG)
+![Figura 23](imagenes/punto8_traceroute2.PNG)
 
 Estas dos últimas imágenes reflejan el impacto de la configuración del **costo en OSPF** sobre la selección de rutas y cómo el protocolo ajusta dinámicamente el tráfico en función de los enlaces disponibles. 
 
@@ -237,7 +237,7 @@ Con el objetivo de simular la conectividad de una red interna hacia un proveedor
 
 Se creó una interfaz de loopback en el router R1 con la dirección IP 192.168.1.194/27, la cual representa el punto de enlace hacia un ISP simulado. Se realizó con las siguientes líneas:
 
-![Figura 24](punto9_conifg_interface.png)
+![Figura 24](imagenes/punto9_conifg_interface.png)
 
 **Configuración de una ruta estática predeterminada:**
 
@@ -255,7 +255,7 @@ default-information originate
 
 Este comando dentro del proceso OSPF en R1 indica al router que debe anunciar su ruta estática por defecto al resto de los vecinos OSPF. De este modo, todos los routers que reciben esta actualización OSPF la incorporan a su tabla de enrutamiento como una ruta externa tipo 2 (O*E2), lo que les permite reenviar tráfico desconocido hacia R1, actuando así como puerta de enlace hacia el ISP simulado. Vemos por ejemplo en Router 2:
 
-![Figura 24](punto9_tablaR2.png)
+![Figura 24](imagenes/punto9_tablaR2.png)
 
 ---
 ## Shutdown de interfaces
@@ -291,13 +291,16 @@ La RIB incluye todas las rutas aprendidas desde diferentes protocolos (OSPF, BGP
 
 La FIB (Forwarding Information Base) es una tabla utilizada por los routers para tomar decisiones de reenvío de paquetes IP. A diferencia de la RIB (Routing Information Base), que contiene todas las rutas aprendidas por los protocolos de enrutamiento y configuraciones estáticas, la FIB almacena únicamente las rutas óptimas ya procesadas y listas para ser utilizadas por el plano de reenvío. Esta tabla se genera a partir de la RIB y contiene información específica como el prefijo de destino, la dirección del siguiente salto y la interfaz de salida. En equipos Cisco, la FIB es mantenida por CEF (Cisco Express Forwarding), lo que permite un reenvío de paquetes basado en hardware altamente escalable y con menor carga para el CPU del router.
 
-![Figura 25](punto11_fib.png)
+![Figura 25](imagenes/punto11_fib.png)
 
 
 ---
 
 ## Referencias
-Cisco Systems. (s.f.). Configurar OSPF. Cisco. https://www.cisco.com/c/es_mx/support/docs/ip/open-shortest-path-first-ospf/118879-configure-ospf-00.html
-FRRouting Project. (s.f.). FRRouting documentation. https://docs.frrouting.org/en/latest/
-Network Academy. (s.f.). OSPF - CCNA. https://www.networkacademy.io/ccna/ospf
-Stallings, W. (2006). Organización y arquitectura de computadores: Diseño para el rendimiento (7.ª ed.). Pearson Educación.
+Cisco Systems. (s.f.). Configurar OSPF. Cisco. https://www.cisco.com/c/es_mx/support/docs/ip/open-shortest-path-first-ospf/118879-configure-ospf-00.html	
+
+FRRouting Project. (s.f.). FRRouting documentation. https://docs.frrouting.org/en/latest/	
+
+Network Academy. (s.f.). OSPF - CCNA. https://www.networkacademy.io/ccna/ospf		
+
+Stallings, W. (2006). Organización y arquitectura de computadores: Diseño para el rendimiento (7.ª ed.). Pearson Educación.	
