@@ -51,11 +51,11 @@ Los enlaces entre routers utilizan las siguientes subredes:
 
 ![Figura 2](imagenes/punto2_redesinterfaces.png)
 
-	Para los hosts, se definieron las siguientes subredes y direcciones IPv4 específicas para cada computadora:
+Para los hosts, se definieron las siguientes subredes y direcciones IPv4 específicas para cada computadora:
 
 ![Figura 3](imagenes/punto2_host.png)
 
-	Finalmente, la asignación de direcciones IP a cada interfaz de los routers quedó organizada de la siguiente manera:
+Finalmente, la asignación de direcciones IP a cada interfaz de los routers quedó organizada de la siguiente manera:
 
 ![Figura 4](imagenes/punto2_tablainterfaces.png)
 
@@ -114,7 +114,7 @@ Al ser un vecino ya conocido anteriormente y no tener modificaciones, lo único 
 
 ![Figura 9](imagenes/punto4_HELLO_rta_R5_haciaR3.png)
 
-	Otro caso para analizar es cómo esos paquetes _Hello_ también se envían hacia las computadoras. Estos host no ejecutan OSPF ni participan en el proceso de establecimiento de vecindades de OSPF, por lo que el paquete se descarta.
+Otro caso para analizar es cómo esos paquetes _Hello_ también se envían hacia las computadoras. Estos host no ejecutan OSPF ni participan en el proceso de establecimiento de vecindades de OSPF, por lo que el paquete se descarta.
 
 ![Figura 10](imagenes/punto4_hello_S1_haciaPC1.png)
 
@@ -169,7 +169,7 @@ Si bien **Área 2** gestiona un mayor flujo de información debido a la cantidad
 ![Figura 17](imagenes/punto6_area0_parte2.png)
 
 
-	Una forma de verificar la funcionalidad OSPF es ver desde el router _R2_ y consultar la información acerca de los vecinos _R1_ y _R3_. Por lo tanto, obtenemos:
+Una forma de verificar la funcionalidad OSPF es ver desde el router _R2_ y consultar la información acerca de los vecinos _R1_ y _R3_. Por lo tanto, obtenemos:
 
 ![Figura 10](punto7a.png)
 
@@ -180,7 +180,7 @@ En la imagen, se pueden identificar los dos vecinos, donde:
 
 Estos roles aseguran la estabilidad del enrutamiento OSPF, facilitando la sincronización de la topología de la red. Además, los tiempos de expiración muestran que la comunicación entre los routers es activa. Este tipo de información que se provee es útil para supervisar el estado de la red y detectar posibles inconvenientes en la conectividad.
 
-	Por último, en el router _R2_ consultamos la información sobre las operaciones del protocolo de enrutamiento:
+Por último, en el router _R2_ consultamos la información sobre las operaciones del protocolo de enrutamiento:
 
 ![Figura 7](imagenes/punto7b.png)
 
@@ -190,7 +190,7 @@ Además, se confirma que el router _R2_ mantiene una operatividad óptima dentro
 
 ## Costos de rutas
 
-	Hemos mencionado que OSPF funciona con un algoritmo shortest path, que calcula la mejor ruta teniendo en cuenta el costo de cada enlace. Si no se configura el costo manualmente, OSPF lo calcula así:
+Hemos mencionado que OSPF funciona con un algoritmo shortest path, que calcula la mejor ruta teniendo en cuenta el costo de cada enlace. Si no se configura el costo manualmente, OSPF lo calcula así:
 
 - Costo = Reference Bandwidth / Interface Bandwidth
 
@@ -205,7 +205,7 @@ En este punto haremos, desde el Router 2, un traceroute a la dirección de H5.
 
 La **salida del traceroute** confirma que los paquetes atraviesan **tres hops** antes de alcanzar H5, validando la propagación de rutas en la LSDB. La baja latencia observada en cada salto sugiere que la red opera de manera estable, sin retrasos significativos en la transmisión de datos.
 
-	Por esta salida, podemos interpretar que la ruta fue:
+Por esta salida, podemos interpretar que la ruta fue:
 
 ![Figura 19](imagenes/punto8_traceroute1.PNG)
 
@@ -216,11 +216,11 @@ Luego, configuraremos el enlace entre R3 y R5 con un costo de 20, para ver cómo
 
 ![Figura 20](imagenes/punto8_cambiarCosto.png)
 
-	Como vemos en la tercer línea de la siguiente captura, el costo fue cambiado a 20 :
+Como vemos en la tercer línea de la siguiente captura, el costo fue cambiado a 20 :
 
 ![Figura 21](imagenes/punto8_visualizacion_costo.png)
 
-	Ahora la salida de ´´´traceroute 10.128.0.2´´ desde el mismo origen, dado que el costo del enlace R3-R4 ha aumentado, se puede observar que se evita ese camino, obteniendo:
+Ahora la salida de ´´´traceroute 10.128.0.2´´ desde el mismo origen, dado que el costo del enlace R3-R4 ha aumentado, se puede observar que se evita ese camino, obteniendo:
 
 ![Figura 22](imagenes/punto8_costoAlto.PNG)
 
