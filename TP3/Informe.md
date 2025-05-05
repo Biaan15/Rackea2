@@ -121,7 +121,7 @@ Otro caso para analizar es cómo esos paquetes _Hello_ también se envían hacia
 ## Segmentación por áreas
 En OSPF, **segmentar por áreas** significa dividir una red grande en varias secciones más pequeñas llamadas **áreas** para organizar y optimizar el proceso de enrutamiento.
 Cada área agrupa un conjunto de routers y redes que comparten información detallada solo dentro de esa área, en lugar de compartirla con toda la red OSPF. Esto reduce el tamaño de las tablas de enrutamiento, disminuye la cantidad de mensajes de actualización de estado de enlace y mejora el rendimiento general. Para esta instancia vamos a dividir la topología planteada en dos áreas:
-![Figura 13](punto6_topologia.PNG)
+![Figura 13](imagenes/punto6_topologia.PNG)
 
 Hay que tener en cuenta que OSPF necesita que todas las áreas estén conectadas a _Área 0_ (el Backbone). Para esto debe haber un router que conecta ambas áreas conocido como ABR (Area Border Router), que tiene interfaces en ambas áreas.
 Se definió que:
