@@ -73,7 +73,7 @@ Para verificar la conexión punto a punto hacemos ping a una computadora en otra
 ![Figura 5](imagenes/punto3_pingH1_H4.png)
 
 
-Para ver tabla de enrutamiento podemos hacer: ´´´show ip route´´´, donde tenemos conexiones _C (red), L (host) y O (conocidas con OSPF)_. También podemos filtrar exclusivamente rutas OSPF con ´´´show ip route OSPF´´´. En el router 1, la tabla de enrutamiento quedó de la siguiente manera:
+Para ver tabla de enrutamiento podemos hacer: `show ip route`, donde tenemos conexiones _C (red), L (host) y O (conocidas con OSPF)_. También podemos filtrar exclusivamente rutas OSPF con ```show ip route OSPF```. En el router 1, la tabla de enrutamiento quedó de la siguiente manera:
  
 ![Figura 6](imagenes/punto3_rutas_R1.png)
 
@@ -84,7 +84,7 @@ Podemos observar también las redes que el router está notificando con:
 ![Figura 7](imagenes/punto5.png)
 
 
-Como mencionamos anteriormente, la LSDB es el lugar donde OSPF almacena toda la topología que ha aprendido del área.  Es usada para calcular las rutas más cortas. Mediante el comando ´´´show ip ospf database´´´, se muestra los **LSAs (Link State Advertisements)** que el router conoce, junto con otro tipo de información como el **router ID**, sus enlaces, costos, etc. Esta base debe ser igual para todos los routers de una misma área.
+Como mencionamos anteriormente, la LSDB es el lugar donde OSPF almacena toda la topología que ha aprendido del área.  Es usada para calcular las rutas más cortas. Mediante el comando ```show ip ospf database```, se muestra los **LSAs (Link State Advertisements)** que el router conoce, junto con otro tipo de información como el **router ID**, sus enlaces, costos, etc. Esta base debe ser igual para todos los routers de una misma área.
 Por ejemplo, al ejecutar el comando en _Router1_ y _Router2_ (tal como se muestran en las imágenes), observamos que la información almacenada es idéntica, asegurando la estabilidad del enrutamiento OSPF en la red.
 
 ![Figura 8](imagenes/punto5b_R1.png)
@@ -94,7 +94,7 @@ Por ejemplo, al ejecutar el comando en _Router1_ y _Router2_ (tal como se muestr
 Se puede observar como el mismo comando en ambos routers nos devuelve la misma información, tal como era esperado.
 
  
-### Análisis de paquetes
+## Análisis de paquetes
 
 En este punto, se busca identificar y analizar los mensajes intercambiados por OSPF. En el tráfico de la simulación vemos mensajes _Hello_. Se utilizan para descubrir y mantener la comunicación con los routers vecinos, estableciendo parámetros como el identificador del router, el área OSPF a la que pertenece, y los parámetros de temporización. Respecto a los temporizadores tenemos dos tipos:
 
@@ -121,42 +121,39 @@ Otro caso para analizar es cómo esos paquetes _Hello_ también se envían hacia
 ## Segmentación por áreas
 En OSPF, **segmentar por áreas** significa dividir una red grande en varias secciones más pequeñas llamadas **áreas** para organizar y optimizar el proceso de enrutamiento.
 Cada área agrupa un conjunto de routers y redes que comparten información detallada solo dentro de esa área, en lugar de compartirla con toda la red OSPF. Esto reduce el tamaño de las tablas de enrutamiento, disminuye la cantidad de mensajes de actualización de estado de enlace y mejora el rendimiento general. Para esta instancia vamos a dividir la topología planteada en dos áreas:
+
 ![Figura 13](imagenes/punto6_topologia.PNG)
 
 Hay que tener en cuenta que OSPF necesita que todas las áreas estén conectadas a _Área 0_ (el Backbone). Para esto debe haber un router que conecta ambas áreas conocido como ABR (Area Border Router), que tiene interfaces en ambas áreas.
 Se definió que:
-**R1 y R2** pertenecen al **Área 1** (equivalente al Área A).
 
-
-**R3, R4 y R5** pertenecen al **Área 2** (equivalente al Área B).
+- **R1 y R2** pertenecen al **Área 1** (equivalente al Área A).
+- **R3, R4 y R5** pertenecen al **Área 2** (equivalente al Área B).
 
 
 Para que ambas áreas puedan comunicarse correctamente, se configuró el **enlace entre R2 y R3** dentro del **Área 0**, actuando como **enlace backbone**.
 Esto permite que:
 
+- **R2** funcione como ABR entre **Área 1** y **Área 0**.
+- **R3** funcione como ABR entre **Área 2** y **Área 0**.
 
-**R2** funcione como ABR entre **Área 1** y **Área 0**.
-
-
-**R3** funcione como ABR entre **Área 2** y **Área 0**.
 Además, el enlace físico entre **R1 y R3**, correspondiente a la red `192.168.1.32/27`, fue configurado en **Área 1**, ya que **ambos routers deben tener la misma área en interfaces conectadas directamente**. Este enlace podría haberse configurado en Área 2 también, siempre que ambos lados coincidieran.
 
 Se concluye que:
-**R1** comparte LSDB con **R2** y **R3** dentro del **Área 1**, pero las rutas hacia **Área 2** le llegan como **rutas inter-área (O IA)** gracias a los ABRs.
 
+- **R1** comparte LSDB con **R2** y **R3** dentro del **Área 1**, pero las rutas hacia **Área 2** le llegan como **rutas inter-área (O IA)** gracias a los ABRs.
+- **R2** tiene visibilidad de las LSDB de **Área 1** y **Área 0**, cumpliendo el rol de ABR.
+- **R3** tiene LSDB de **Área 0**, **Área 1**, y **Área 2**, siendo un punto clave de interconexión.
+- **R4 y R5** comparten únicamente la LSDB de **Área 2**, y aprenden las rutas externas a su área como **O IA** a través de **R3**.
 
-**R2** tiene visibilidad de las LSDB de **Área 1** y **Área 0**, cumpliendo el rol de ABR.
-
-
-**R3** tiene LSDB de **Área 0**, **Área 1**, y **Área 2**, siendo un punto clave de interconexión.
-
-
-**R4 y R5** comparten únicamente la LSDB de **Área 2**, y aprenden las rutas externas a su área como **O IA** a través de **R3**.
 Si leemos las entradas LSDB en un router de cada una de las áreas podemos ver:
+
 **Área 1**
+
 ![Figura 14](imagenes/punto6_area1.png)
 
 **Área 2**
+
 ![Figura 15](imagenes/punto6_area2.png)
 
 El análisis de la LSDB en **Área 1** y **Área 2** muestra diferencias clave en la propagación de información dentro del protocolo OSPF. Ambas áreas contienen _Router Link States_ y _Network Link States_, pero también incluyen _Summary LSAs_, lo que confirma el intercambio de rutas entre áreas.
@@ -164,6 +161,7 @@ El análisis de la LSDB en **Área 1** y **Área 2** muestra diferencias clave e
 Si bien **Área 2** gestiona un mayor flujo de información debido a la cantidad de routers que la conforman y su conexión con **Área 0**, **Área 1** también participa en la redistribución de rutas inter-área, recibiendo información a través de los ABRs (R2 y R3). Esta interacción entre áreas permite una administración eficiente del enrutamiento y optimiza el tráfico de la red.
 
 **Área 0**
+
 ![Figura 16](imagenes/punto6_area0_primeracap.png)
 
 ![Figura 17](imagenes/punto6_area0_parte2.png)
@@ -171,7 +169,7 @@ Si bien **Área 2** gestiona un mayor flujo de información debido a la cantidad
 
 Una forma de verificar la funcionalidad OSPF es ver desde el router _R2_ y consultar la información acerca de los vecinos _R1_ y _R3_. Por lo tanto, obtenemos:
 
-![Figura 10](punto7a.png)
+![Figura 10](imagenes/punto7a.png)
 
 En la imagen, se pueden identificar los dos vecinos, donde:
 
@@ -229,7 +227,7 @@ Ahora la salida de ´´´traceroute 10.128.0.2´´ desde el mismo origen, dado q
 
 Estas dos últimas imágenes reflejan el impacto de la configuración del **costo en OSPF** sobre la selección de rutas y cómo el protocolo ajusta dinámicamente el tráfico en función de los enlaces disponibles. 
 
-### Redistribución de una ruta OSPF predeterminada en R1
+## Redistribución de una ruta OSPF predeterminada en R1
 
 Con el objetivo de simular la conectividad de una red interna hacia un proveedor de servicios de Internet (ISP), se llevaron a cabo las siguientes configuraciones en el router R1:
 
@@ -243,7 +241,7 @@ Se creó una interfaz de loopback en el router R1 con la dirección IP 192.168.1
 
 Se añadió en R1 una ruta estática por defecto utilizando el siguiente comando:
 
-´´´ip route 0.0.0.0 0.0.0.0 loopback 0´´´
+```ip route 0.0.0.0 0.0.0.0 loopback 0```
 
 En redes, la ruta estática predeterminada es 0.0.0.0 0.0.0.0. Esta ruta le indica al dispositivo que, para todo tráfico destinado a redes no conocidas (sin coincidencias más específicas en la tabla de enrutamiento), utilice como siguiente salto la dirección IP configurada en la loopback (simulando el acceso a Internet).
 
@@ -251,7 +249,7 @@ Redistribución de la ruta estática predeterminada en OSPF:
 
 Finalmente, para permitir que los demás routers en el área OSPF conozcan esta ruta por defecto y puedan enrutar el tráfico hacia el ISP a través de R1, se utilizó el siguiente comando en el proceso OSPF del router:
 
-default-information originate
+```default-information originate```
 
 Este comando dentro del proceso OSPF en R1 indica al router que debe anunciar su ruta estática por defecto al resto de los vecinos OSPF. De este modo, todos los routers que reciben esta actualización OSPF la incorporan a su tabla de enrutamiento como una ruta externa tipo 2 (O*E2), lo que les permite reenviar tráfico desconocido hacia R1, actuando así como puerta de enlace hacia el ISP simulado. Vemos por ejemplo en Router 2:
 
