@@ -46,6 +46,7 @@ Veamos el caso de la topología de la consigna:
 
 ![Figura 3](imagen/Figura3Parte1.png)
 
+
 El tráfico puede ir desde AS1 (R1) hacia AS3 (R4) pasando por AS2. AS2 no origina ni termina ese tráfico, solo lo transporta de un AS a otro. Por lo tanto, AS2 es de tránsito, mientras que AS1 y AS3 son redes de borde: solo intercambian tráfico con sus vecinos, pero no transportan tráfico de terceros.
 
 ---
@@ -79,13 +80,14 @@ Ahora veamos qué sucede si cambiamos de red. Recordemos que descubrimos origina
 
 Si probamos conectados a la red de la facultad obtenemos:
 
-![Figura 7](imagen/Figura7Parte1.png)
+![Figura 6](imagen/Figura5-1Parte1.png)
 
 También probando, por ejemplo, desde la red del lugar de trabajo de uno de los integrantes del grupo obtenemos:
 
-![Figura 6](imagen/Figura6Parte1.png)
+![Figura 7](imagen/Figura6Parte1.png)
 
-![Figura 6-1](imagen/Figura6-1Parte1.png)
+
+![Figura 7-1](imagen/Figura6-1Parte1.png)
 
 Si queremos comparar esta ultima con la AS7303 de Telecom, podemos ver una gran diferencia en la cantidad de peers, teniendo AS262150  conexiones BGP con únicamente 13 Sistemas Autónomos, frente a los 244 de Telecom, demostrando la diferencia en el tamaño de la red. 
 
