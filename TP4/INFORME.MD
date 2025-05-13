@@ -144,7 +144,7 @@ La **evidencia de que BGP** está funcionando correctamente suele encontrarse cu
 
 La imagen confirma que BGP está funcionando correctamente, ya que la sesión con el vecino pudo ser establecida y está intercambiando rutas activamente. Además, el protocolo operó de manera continua sin interrupciones.
 
-En Packet Tracer, los estados de BGP se representan mediante números en lugar de nombres convencionales. Se observa que el `Router 0` mantiene una sesión BGP con el vecino `10.0.0.2`, cuyo estado en la columna State es **4**. Esto significa que el router ha enviado un mensaje de apertura (`OpenSent`), indicando que el proceso de negociación BGP está avanzando, aunque aún no se ha alcanzado el estado **Established (6)**.
+En Packet Tracer, los estados de BGP se representan mediante números en lugar de nombres convencionales. Se observa que el `Router0` mantiene una sesión BGP con el vecino `10.0.0.2`, cuyo estado en la columna State es **4**. Esto significa que el router ha enviado un mensaje de apertura (`OpenSent`), indicando que el proceso de negociación BGP está avanzando, aunque aún no se ha alcanzado el estado **Established (6)**.
 
 Con respecto a las **tablas de ruteo**, vamos a tener dos tipos de tablas:
 
