@@ -233,7 +233,7 @@ A su vez, configuramos todas las direcciones IPv6 estáticas de cada uno de los 
 
 ![Figura 13](imagen/Figura13Parte2.png)
 
-![Figura 14](imagen/Figura14Parte2.png)
+![Figura 14](imagen/Figura14Parte32.png)
 
 ![Figura 15](imagen/Figura15Parte2.png)
 
