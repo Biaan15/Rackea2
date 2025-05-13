@@ -78,6 +78,7 @@ Ahora veamos qué sucede si cambiamos de red. Recordemos que descubrimos origina
 
 ![Figura 5](imagen/Figura5Parte1.png)
 
+
 Si probamos conectados a la red de la facultad obtenemos:
 
 ![Figura 6](imagen/Figura5-1Parte1.png)
