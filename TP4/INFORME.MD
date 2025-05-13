@@ -262,8 +262,6 @@ Si probamos conectados a la red de la facultad obtenemos:
 También probando, por ejemplo, desde la red del lugar de trabajo de uno de los integrantes del grupo obtenemos:
 
 ![Figura 7](imagen/Figura6Parte1.png)
-
-
 ![Figura 7-1](imagen/Figura6-1Parte1.png)
 
 Si queremos comparar esta ultima con la AS7303 de Telecom, podemos ver una gran diferencia en la cantidad de peers, teniendo AS262150  conexiones BGP con únicamente 13 Sistemas Autónomos, frente a los 244 de Telecom, demostrando la diferencia en el tamaño de la red. 
@@ -359,7 +357,6 @@ En una red basada en BGP, es fundamental analizar cómo el tráfico responde a c
 En primer lugar, como ya comprobamos anteriormente, verificamos si hay una conectividad inicial entre los dispositivos (desde _PC0_ hacia _PC2_). Luego de esto, habilitaremos el **Modo Simulación** del programa para observar el movimiento de datos entre dichos hosts, configurando los filtros de evento para mostrar `ICMP` y `BGP`:
 
 ![Figura 7](imagen/Figura7Parte2.png)
-
 ![Figura 8](imagen/Figura8Parte2.png)
 
 En esta captura, podemos observar la transmisión de paquetes `ICMP` y `BGP` donde:
@@ -409,11 +406,8 @@ Donde:
 A su vez, configuramos todas las direcciones IPv6 estáticas de cada uno de los hosts, teniendo en cuenta las direcciones IPv6 del Sistemas Autónomo que pertenecen, configurados en los routers:
 
 ![Figura 13](imagen/Figura13Parte2.png)
-
 ![Figura 14](imagen/Figura14Parte32.png)
-
 ![Figura 15](imagen/Figura15Parte2.png)
-
 ![Figura 16](imagen/Figura16Parte2.png)
 
 **Prueba de conectividad:**
@@ -434,4 +428,113 @@ De esta forma, el diseño de la red final lo presentamos en la siguiente tabla:
 | PC3    |FastEthernet0  |192.168.2.0    | 192.168.2.3|255.255.255.0|2001:0DB8:200::3/64    |Host en AS200          |
 | SW0    |   VLAN1       |    N/A        |    N/A     |   N/A       |  N/A   |Conmutador L2 en AS100          |
 | SW1    |   VLAN1       |    N/A        |    N/A     |   N/A       |  N/A   |Conmutador L2 en AS200          |
+
+### Ampliacion del sistema autónomo
+
+Ahora se tiene como objetivo ampliar el sistema autónomo AS100 añadiendo un nuevo router (Router2), un switch y un nuevo host (h4) conectado a ese switch, garantizando su integración al dominio de enrutamiento.
+
+Por ese motivo vamos a adoptar la siguiente topología:
+Router0 conectado a Router2 mediante un enlace punto a punto.
+Router2 conectado a un switch, el cual está vinculado al host h4.
+
+Como ya sabemos, debemos asignar direcciones IP a los componentes nuevos que integran AS100 y eso es lo que se hace a continuación.
+
+Para el enlace Router0 ⇄ Router2: la red será `10.0.1.0/30`. En este caso se decidió utilizar una subred /30 para el enlace punto a punto, ya que solo requiere dos hosts (Router0 y Router2). Entonces:
+`Router0: 10.0.1.1`
+`Router2: 10.0.1.2`
+
+Por otro lado para la red LAN del Router2 hacia h4 se decidió utilizar la red **192.168.4.0/24**:
+`Router2: 192.168.4.1`
+`h4: 192.168.4.10` (puerta de enlace: `192.168.4.1`)
+
+Una vez establecido esto, pasamos a configurar cada uno de los elementos nuevos. En primer lugar configuramos el **h4** con las direcciones mencionadas anteriormente.
+
+![Figura 18](imagen/Figura18Parte2.png)
+
+Luego configuramos los _routers 2, 0 y 1_:
+
+![Figura 19](imagen/Figura19Parte2.png)
+![Figura 20](imagen/Figura20Parte2.png)
+![Figura 21](imagen/Figura21Parte2.png)
+
+A partir de la configuración de cada interfaz con su dirección ip correspondiente, recordamos ejecutar el comando `no shutdown`, para habilitar dicha interfaz.
+
+Cabe destacar que en la configuración de estos routers, usamos el comando `ip route` e `ipv6 route` para establecer rutas estáticas para comprobar la conexión de la red. Sin embargo, estas rutas serán eliminadas, más adelante, para poder experimentar el comportamiento de OSPF y BGP.
+
+Ya realizadas las configuraciones, comprobamos desde **h4** la conexión con los otros hosts:
+
+![Figura 22](imagen/Figura22Parte2.png)
+
+**Incorporación de protocolo OSPF**
+
+Una vez incorporado este nuevo router y host en AS100,vamos a sustituir las rutas estáticas en AS100 por OSPF como mencionamos anteriormente. Este protocolo de enrutamiento interior nos va a permitir el descubrimiento dinámico de rutas y escalabilidad a diferencia de las rutas estáticas.
+
+Para realizar dicha tarea debemos anunciar ambas redes internas del AS100 en el área 0, que es la principal área backbone de OSPF. Lo mismo con el enlace punto a punto, para garantizar la conectividad entre routers. Procedemos a configurar ambos routers, tanto en IPv4 como en IPv6:
+
+![Figura 23](imagen/Figura23Parte2.png)
+![Figura 24](imagen/Figura24Parte2.png)
+
+Como podemos observar, primero iniciamos el proceso OSPF número 1 con el comando `router ospf 1`. Luego con el comando `network [IP] [máscara] area [área]`, incluimos la red correspondiente en el área 0 de OSPF. La máscara `0.0.0.3` corresponde a `/30` y `0.0.0.255` a `/24`, tal como lo configuramos anteriormente.
+
+En **OSPFv3 (IPv6)**, la asignación del área se hace directamente en la interfaz con `ipv6 ospf [ID] area [área]`, como se observa en las imagenes.
+
+Una vez configurado OSPF en AS100, validamos la conexión de las rutas, con el comando `show ip route` y `show ipv6 route`
+
+![Figura 25](imagen/Figura25Parte2.png)
+![Figura 26](imagen/Figura26Parte2.png)
+
+Las rutas **OSPF** son aquellas que están identificadas con la letra **“O”**, tal como se aprecia en las imagenes.  
+
+En el _Router2_ podemos encontrar:
+La ruta de la red interna perteneciente al _router0_, tanto en IPv4 (`192.168.1.0/24`) como en IPv6 (`2001:DB8:100::/64`)
+Por otro lado, en el _router0_ se ve:
+La ruta de la red interna perteneciente al router2, tanto en IPv4 (`192.168.4.0/24`) como en IPv6 (`2001:DB8:104::/64`)
+
+**Redistribuir OSPF en BGP.**
+
+Como ya tenemos la configuración OSPF en AS100 ahora podemos redistribuirla en BGP.
+
+Primero nos vamos a asegurar de eliminar todas las rutas estáticas que hayamos configurado anteriormente, para cumplir con el objetivo propuesto. Luego continuaremos con la redistribución de OSPF en BGP, para permitir que estos manejen el enrutamiento de forma dinámica. 
+
+Configuramos el _router0_ y el _router1_:
+
+![Figura 27](imagen/Figura27Parte2.png)
+![Figura 28](imagen/Figura28Parte2.png)
+
+En dichas imágenes, podemos observar el uso de ciertos comandos:
+
+`router bgp [AS]`: iniciamos el proceso BGP para el sistema autónomo indicado.
+`neighbor [IP] remote-as [AS]`: establecemos una sesión eBGP con el router indicado.
+`redistribute ospf 1`: en el router0 permitimos que las rutas OSPF aprendidas sean exportadas al dominio BGP.
+`network …`: en el router1 anunciamos explícitamente una red local a BGP (solo en Router1)
+
+Cabe mencionar que se necesitó lanzar el comando `clear ip bgp *` para que en las tablas de ruteo que se ven a continuación, aparezcan las rutas BGP redistribuidas:
+
+![Figura 29](imagen/Figura29Parte2.png)
+
+![Figura 30](imagen/Figura30Parte2.png)
+
+Las rutas BGP aparecen en las tablas identificadas con la letra **“B”**. Por lo que, analizando dichas tablas, podemos decir que:
+
+El _Router1_ aprendió mediante BGP las rutas `192.168.1.0/24` y `192.168.4.0/24` (ambas del AS100).
+El _Router0_ aprendió la red `192.168.2.0/24` perteneciente a AS200, desde Router1, gracias a BGP.
+
+Finalmente, como ambos sistemas autónomos se conocen gracias a BGP, podemos comprobar la conexión entre los mismos, realizando pings desde el **host número 4**:
+
+![Figura 31](imagen/Figura31Parte2.png)
+
+Tal como se ve en la imágen, todos los pings resultan exitosos, asegurando la conexión de AS100 y AS200. De esta manera, podemos concluir que gracias a la redistribución de OSPF en BGP, el router1, perteneciente al sistema autónomo AS200, tiene acceso completo a las redes internas del AS100. La integración entre ambos sistemas autónomos es funcional y permite comunicación entre los hosts (como h2 en AS200 y h4 en AS100), validando así el correcto funcionamiento del enrutamiento dinámico entre ambos AS, mediante los protocolos mencionados.
+
+## Referencias
+- [1] https://www.youtube.com/watch?v=CT4xaXLcnpM&ab_channel=Udacity
+- [2] https://www.peeringdb.com/asn/7303
+- [3] https://bgp.he.net/AS7303
+- [4] https://bgp.tools/as/7303
+- [5] https://www.cloudflare.com/es-es/learning/network-layer/what-is-an-autonomous-system/	
+- [6] https://www.geeksforgeeks.org/difference-between-distance-vector-routing-and-link-state-routing/
+- [7] https://avrohomg.medium.com/the-facebook-outage-of-2021-6231bf99ff57
+
+- [8] https://es.wikipedia.org/wiki/Apag%C3%B3n_de_Facebook_de_2021
+- [9] https://blog.cloudflare.com/october-2021-facebook-outage
+- [10] https://engineering.fb.com/2021/10/04/networking-traffic/outage/
 
