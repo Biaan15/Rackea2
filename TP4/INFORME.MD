@@ -1,3 +1,180 @@
+# Trabajo Práctico N°4: 
+# Ruteo externo dinámico y sistemas autónomos 
+**Nombres**  
+_Jorge A. Arbach_
+_Bianca A. Fraga_
+_Sol A. Nou_
+_Felipe Pillichody_
+
+**Rackea2**
+
+**Universidad Nacional de Córdoba**  
+**Redes de Computadoras**
+**Profesores**: Santiago Henn   
+**Fecha**: Jueves 24/04/2025
+
+---
+
+### Información de los autores
+ 
+- **Información de contacto**: _jorge.arbach@mi.unc.edu.ar_, _bianca.fraga@mi.unc.edu.ar_, _felipe.pillichody@mi.unc.edu.ar_, _sol.nou@mi.unc.edu.ar_
+---
+
+
+
+
+# Parte I - Integración de conceptos, actividades online e investigación
+
+
+## 1. Sobre AS
+
+Un Autonomous System (AS) es una red o grupo de redes muy grande con una única política de enrutamiento. Lo que esté dentro de un AS comparte criterios unificados sobre cómo enrutar el tráfico hacia otros AS. Puede contener muchas subredes LAN, WAN, o redes privadas y públicas.
+
+La mayoría de los AS se conectan a otros AS, pero si un AS se conecta solo a otro AS y comparte la misma política de enrutamiento, puede considerarse una subred del primer AS.
+
+Cada AS esta bajo una administración única que es responsable de las políticas de ruteo involucradas. Lo normal es que cada una sea gestionada por un proveedor de acceso a Internet (ISP), una gran empresa tecnológica, una universidad o una agencia gubernamental.
+
+
+
+Desde una perspectiva más general, podemos verlo como que Internet es una red de redes, y los sistemas autónomos son las grandes redes que componen Internet. Por este motivo, cada ordenador o dispositivo que se conecta a Internet está conectado a un AS. 
+
+
+Podemos pensarlo con la siguiente analogía: un AS como la oficina de correos de una ciudad. El correo va de una oficina de correos a otra hasta que llega a la ciudad correcta, y la oficina de correos de esa ciudad entregará el correo en esa ciudad. Del mismo modo, los paquetes de datos recorren Internet saltando de AS a AS hasta que llegan al AS que contiene su dirección de Protocolo de Internet (IP) de destino. Los enrutadores dentro de ese AS envían el paquete a la dirección IP.
+Cada AS controla un conjunto específico de direcciones IP, al igual que la oficina de correos de cada ciudad es responsable de entregar el correo a todas las direcciones de la ciudad. El rango de direcciones IP que controla un determinado AS se denomina su espacio de direcciones IP.
+
+Como vemos, es muy similar a lo que sucede con los paquetes que se envían entre redes, pero a una escala mucho más grande. Esto es porque existe similitud entre el enrutamiento intradominio (OSPF, RIP) e inter-AS (BPG).
+
+
+Cada AS tiene un identificador único conocido como ASN (Autonomous System Number). Es usado principalmente por el protocolo BGP para identificar a cada AS y permitir el intercambio de rutas entre ellos.
+Existen dos tipos de ASN:
+
+
+-  ASN de 16 bits: van del 1 al 65.535 (algunos están reservados).
+- ASN de 32 bits (también llamado ASN extendido): van del 65.536 al 4.294.967.295.
+
+
+A veces se expresan en formato decimal o en formato dotted. Los ASN privados (como los rangos de IP privadas) también existen: por ejemplo, del 64.512 al 65.534 para 16 bits.
+Veamos algunos AS conocidos:
+
+1. Google:
+
+
+- ASN: 15169
+- Nombre: GOOGLE
+- Descripción: Utilizado por Google para sus servicios globales, incluyendo Google Search, Gmail, YouTube, etc.
+
+
+2. Apple Inc.
+
+
+- ASN: 714
+- Nombre: APPLE-ENGINEERING
+- Descripción: ASN histórico de Apple, usado para servicios de ingeniería y red de distribución.
+
+
+3. Universidad de Stanford
+
+
+- ASN: 32
+- Nombre: STANFORD
+- Descripción: Uno de los ASN más antiguos. Stanford opera su propia red académica con salida directa a Internet.
+
+
+Para entender cómo nuestra conexión a Internet se enruta a través de la red global, es importante identificar el Sistema Autónomo (AS) al que estamos conectados. En la página web [Hurricane Electric BGP Toolkit](https://bgp.he.net/) podemos ver la leyenda _Your ISP is xxxx_. 
+Por ejemplo, al entrar desde la computadora de un integrante del equipo, conectado a la red wifi de su casa, figura _Your ISP is AS7303 (Telecom Argentina S.A.)_ lo que nos indica que el AS al que está conectados es:
+**AS7303 – Telecom Argentina S.A.**
+![Figura 1](imagen/Figura1Parte1.png)
+Veamos algunas características de este AS:
+**Identidad y Alcance:**
+- Organización: Telecom Argentina
+- También conocida como: FiberCorp, Cablevisión
+- ASN (Autonomous System Number): 7303
+- Tipo de organización: ISP (Internet Service Provider) con servicios de cable y DSL
+- Cobertura geográfica: Regional, principalmente Argentina y Paraguay
+
+
+Telecom Argentina es uno de los mayores proveedores de conectividad de la región, ofreciendo servicios residenciales, móviles y empresariales.
+
+**Información de Enrutamiento y Prefijos**
+El AS7303 de Telecom Argentina administra un importante volumen de direcciones IP públicas y redes anunciadas mediante BGP. Para entenderlo mejor, es clave distinguir entre:
+
+-   Prefijos originados: son los bloques de direcciones IP que Telecom posee y administra directamente. En este caso, origina:  
+-   730 prefijos IPv4, que suman un total de 8.429.312 direcciones IP públicas  
+-   119 prefijos IPv6, aunque el despliegue de IPv6 es aún limitado públicamente       
+-   Prefijos anunciados: representan todas las redes que Telecom anuncia a través de BGP, tanto propias como de clientes o socios de red. En total, anuncia:  
+-   2.535 prefijos IPv4  
+-   285 prefijos IPv6
+
+
+El número de prefijos anunciados es mayor al de originados porque incluye redes de terceros que Telecom ayuda a enrutar (por ejemplo, empresas clientes o acuerdos de peering).
+
+**Conectividad y Peering*
+- Cantidad de peers (conexiones con otros AS): Más de 240  
+- Principales proveedores de tránsito (upstreams):  
+	- AS3356 – Lumen (Level 3)  
+	- AS6762 – Telecom Italia Sparkle (Seabone)  
+	- AS3257 – GTT Communications
+
+
+Estos upstreams permiten que Telecom se conecte al resto del mundo a través de redes troncales de alto nivel, asegurando redundancia y baja latencia.
+**Tráfico y Capacidad**
+- Niveles de tráfico estimados: 10 a 20 terabits por segundo
+- Ratio de tráfico: Mayormente inbound, lo que es típico de un ISP con muchos clientes residenciales (los usuarios descargan más de lo que suben).
+
+
+
+## 2. Sobre BGP
+BGP (Border Gateway Protocol) es el protocolo de enrutamiento utilizado para intercambiar información de rutas entre Sistemas Autónomos (AS) en Internet. Por eso se lo considera el protocolo base de la arquitectura de Internet global.
+Cuando una organización necesita conectarse al mundo exterior, es decir, enrutar paquetes más allá de sus redes internas, debe formar parte de un Sistema Autónomo y utilizar BGP para anunciar sus rutas IP a otros AS.
+A diferencia de protocolos internos como OSPF o RIP, que están diseñados para enrutar dentro de una misma red (intradominio), BGP se utiliza para el enrutamiento entre dominios administrativos distintos (inter-AS).
+BGP es un protocolo de tipo vector de ruta. Es importante no confundirlo con un protocolo de vector de distancia, como RIP. En los protocolos de vector de distancia, las decisiones se basan en una métrica simple como el número de saltos. En cambio, BGP no calcula distancias: toma decisiones en función del camino completo que los paquetes deben recorrer a través de los AS (AS-PATH), además de otros atributos.
+Esta lógica convierte a BGP en un protocolo altamente personalizable, ya que permite aplicar políticas de enrutamiento específicas según necesidades técnicas, comerciales o de seguridad. De esta forma, las organizaciones pueden decidir qué rutas aceptar, preferir o rechazar con gran precisión.
+
+### Funcionamiento del Protocolo BGP
+El funcionamiento de BGP se puede resumir en tres etapas principales: establecimiento de la sesión, mantenimiento de la conexión y anuncio de rutas.
+1. Adquisición de vecino (Neighbor Acquisition)
+BGP establece conexiones entre routers que han sido configurados explícitamente como vecinos (peers). Para ello:
+- Se utiliza el protocolo TCP sobre el puerto 179.
+- Ambos routers intercambian mensajes BGP del tipo OPEN, en los que se negocian parámetros como:
+	- Número de Sistema Autónomo (ASN)
+- Versión del protocolo
+	- Tiempo de hold (tiempo máximo sin mensajes antes de considerar caída la sesión)
+
+
+Este proceso es similar al intercambio inicial de mensajes HELLO en OSPF, aunque más orientado a control de sesión que a descubrimiento automático.
+2. Detección de vecino alcanzable (Keepalive)
+Una vez establecida la conexión BGP:
+- Los routers se envían periódicamente mensajes KEEPALIVE para indicar que la sesión sigue activa.
+
+
+- Si un router no recibe KEEPALIVEs en el tiempo acordado (Hold Time), la sesión BGP se considera caída, y todas las rutas aprendidas de ese vecino se eliminan de la tabla de enrutamiento.
+
+
+3. Intercambio de rutas (Path Advertisement) 
+Con la sesión activa, los routers comienzan a intercambiar información de enrutamiento a través de mensajes UPDATE. Estos mensajes pueden:
+- Anunciar nuevas rutas (prefijos IP)
+- Retirar rutas previamente anunciadas
+
+
+Cada ruta anunciada viene acompañada de atributos que ayudan a determinar la mejor ruta. Algunos atributos clave:
+- AS_PATH: lista de AS atravesados para alcanzar la red (evita loops)
+- NEXT_HOP: dirección IP del siguiente salto
+- LOCAL_PREF, MED, COMMUNITY, entre otros
+
+
+Veamos un ejemplo del proceso completo. Supongamos que el Router A (AS64501) y el Router B (AS64502) quieren intercambiar rutas usando BGP:
+Adquisición de vecino:
+Ambos routers están configurados como vecinos y establecen una conexión TCP por el puerto 179. Se envían mensajes OPEN con sus datos (ASN, tiempos, identificador). Si todo coincide, la sesión queda establecida.
+
+
+Detección de vecino alcanzable:
+Una vez conectados, se envían periódicamente mensajes KEEPALIVE. Si uno deja de responder dentro del tiempo acordado, la sesión se considera caída.
+
+
+Anuncio de rutas:
+Router A anuncia la red 203.0.113.0/24 mediante un mensaje UPDATE, incluyendo atributos como AS_PATH = [64501] y NEXT_HOP = 192.0.2.1. Router B aprende la ruta y la puede reenviar o instalar en su tabla.
+
+
 **Tipos de mensajes BGP**
 
 Todos los mensajes BGP están encapsulados en TCP, lo que garantiza la confiabilidad del transporte. Existen cuatro tipos principales de mensajes:
