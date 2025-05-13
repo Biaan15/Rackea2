@@ -406,7 +406,7 @@ Donde:
 A su vez, configuramos todas las direcciones IPv6 estáticas de cada uno de los hosts, teniendo en cuenta las direcciones IPv6 del Sistemas Autónomo que pertenecen, configurados en los routers:
 
 ![Figura 13](imagen/Figura13Parte2.png)
-![Figura 14](imagen/Figura14Parte32.png)
+![Figura 14](imagen/Figura14Parte2.png)
 ![Figura 15](imagen/Figura15Parte2.png)
 ![Figura 16](imagen/Figura16Parte2.png)
 
