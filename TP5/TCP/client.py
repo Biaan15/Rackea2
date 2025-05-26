@@ -1,10 +1,10 @@
 import socket
 import time
 
-SERVER_IP = '127.0.0.1'  # Cambiar a la IP del servidor en la red o internet
+SERVER_IP = '192.168.1.24'  # Cambiar a la IP del servidor en la red o internet
 PORT = 12345
 INTERVALO_SEGUNDOS = 1
-TOTAL_PAQUETES = 100
+TOTAL_PAQUETES = 10
 NOMBRE_GRUPO = "Rackea2"
 
 def start_client():

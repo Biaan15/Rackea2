@@ -2,11 +2,11 @@ import socket
 import time
 from datetime import datetime
 
-SERVER_IP = '127.0.0.1'
+SERVER_IP = '192.168.1.24'
 PORT = 12345
 INTERVALO_SEGUNDOS = 1
-TOTAL_PAQUETES = 10
-NOMBRE_GRUPO = "GrupoX"
+TOTAL_PAQUETES = 100
+NOMBRE_GRUPO = "Rackea2"
 LOG_FILE = 'client_log.txt'
 
 def log_event(mensaje):
