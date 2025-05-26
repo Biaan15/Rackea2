@@ -11,8 +11,8 @@ def parse_log(filepath):
                 tiempos[mensaje] = timestamp
     return tiempos
 
-envios = parse_log('client_log.txt')
-recepciones = parse_log('server_log.txt')
+envios = parse_log('client_udp_log.txt')
+recepciones = parse_log('server_udp_log.txt')
 
 latencias = []
 mensajes_comunes = sorted(set(envios.keys()) & set(recepciones.keys()), key=lambda x: int(x.split('_')[1]))
