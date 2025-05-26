@@ -2,11 +2,12 @@ import socket
 import time
 from datetime import datetime
 
-SERVER_IP = '192.168.1.33'  # IP del servidor
+
+SERVER_IP = '192.168.1.24'  # IP del servidor
 PORT = 12345
 INTERVALO_SEGUNDOS = 1
 TOTAL_PAQUETES = 100
-NOMBRE_GRUPO = "GrupoX_UDP"
+NOMBRE_GRUPO = "Rackea2"
 LOG_FILE = 'client_udp_log.txt'
 
 def log_event(mensaje):
