@@ -100,3 +100,128 @@ Hacia el final de la captura, se registra un intercambio de **FIN, ACK** por par
 
 
 Ahora, se sumará una _feature_ en ambos scripts para la **generación de logs**, lo que permitirá registrar detalladamente cada etapa del envío y recepción de los paquetes TCP. Además, se incrementará la cantidad de paquetes transmitidos a **100 paquetes** para poder calcular, en base a los logs y un script adicional, la **latencia promedio, máxima, mínima** y el **jitter** de la conexión. Cabe recordar que la **frecuencia de envío** es de **1 segundo** entre cada paquete, manteniendo el mismo intervalo utilizado en las pruebas anteriores. 
+
+A continuación, adjuntamos los resultados obtenidos:
+
+|                 CLIENTE                  |  SERVIDOR                                 |
+|------------------------------------------|-------------------------------------------|
+|[2025-05-25 22:12:31] Enviado: Rackea2_1  |[2025-05-25 22:12:33] Recibido: Rackea2_1  |
+|[2025-05-25 22:12:32] Enviado: Rackea2_2  |[2025-05-25 22:12:34] Recibido: Rackea2_2  |
+|[2025-05-25 22:12:33] Enviado: Rackea2_3  |[2025-05-25 22:12:35] Recibido: Rackea2_3  |
+|[2025-05-25 22:12:34] Enviado: Rackea2_4  |[2025-05-25 22:12:36] Recibido: Rackea2_4  |
+|[2025-05-25 22:12:35] Enviado: Rackea2_5  |[2025-05-25 22:12:37] Recibido: Rackea2_5  |
+|[2025-05-25 22:12:36] Enviado: Rackea2_6  |[2025-05-25 22:12:38] Recibido: Rackea2_6  |
+|[2025-05-25 22:12:37] Enviado: Rackea2_7  |[2025-05-25 22:12:39] Recibido: Rackea2_7  |
+|[2025-05-25 22:12:38] Enviado: Rackea2_8  |[2025-05-25 22:12:40] Recibido: Rackea2_8  |
+|[2025-05-25 22:12:39] Enviado: Rackea2_9  |[2025-05-25 22:12:41] Recibido: Rackea2_9  |
+|[2025-05-25 22:12:40] Enviado: Rackea2_10 |[2025-05-25 22:12:42] Recibido: Rackea2_10 |
+|[2025-05-25 22:12:41] Enviado: Rackea2_11 |[2025-05-25 22:12:43] Recibido: Rackea2_11 |
+|...                                       |...                                        |
+|[2025-05-25 22:14:05] Enviado: Rackea2_95 |[2025-05-25 22:14:08] Recibido: Rackea2_95 |
+|[2025-05-25 22:14:06] Enviado: Rackea2_96 |[2025-05-25 22:14:09] Recibido: Rackea2_96 |
+|[2025-05-25 22:14:07] Enviado: Rackea2_97 |[2025-05-25 22:14:10] Recibido: Rackea2_97 |
+|[2025-05-25 22:14:08] Enviado: Rackea2_98 |[2025-05-25 22:14:11] Recibido: Rackea2_98 |
+|[2025-05-25 22:14:09] Enviado: Rackea2_99 |[2025-05-25 22:14:12] Recibido: Rackea2_99 |
+|[2025-05-25 22:14:10] Enviado: Rackea2_100|[2025-05-25 22:14:13] Recibido: Rackea2_100|
+
+
+### Cálculo de latencia y jitter
+
+Para evaluar el rendimiento de la comunicación TCP entre cliente y servidor, se analizaron los tiempos de transmisión de cada paquete intercambiado. Se registraron los **timestamps** de envío y recepción para calcular la **latencia** y el **jitter** de la conexión.
+
+Para cada paquete $i$ enviado y recibido, se definen los siguientes parámetros:
+
+- $t_{\text{envio},i}$: Timestamp de envío desde el cliente.  
+- $t_{\text{recepcion},i}$: Timestamp de recepción en el servidor.  
+- $L_i = t_{\text{recepcion},i} - t_{\text{envio},i}$: Latencia del paquete $i$, es decir, el tiempo que tarda en llegar desde el cliente al servidor.   
+
+A partir de estos valores, se calcularon las siguientes métricas claves:
+
+
+
+#### 1. Latencia promedio: Se obtiene calculando el promedio de las latencias individuales de los $N$ paquetes transmitidos.
+
+$$
+Latencia_\text{promedio} = \frac{1}{N} \sum_{i=1}^{N} L_i
+$$
+
+
+#### 2. Latencia mínima: Corresponde al menor tiempo de transmisión registrado entre cliente y servidor.
+
+$$
+\text{Latencia}_{\text{min}} = \min(L_i)
+$$  
+
+#### 3. Latencia máxima: Corresponde al mayor tiempo registrado en la transmisión de un paquete.
+
+$$
+\text{Latencia}_{\text{max}} = \max(L_i)
+$$  
+
+
+#### 4. Jitter (según **RFC 3550**): Representa la variabilidad en los tiempos de llegada de los paquetes. Se calcula como la diferencia entre latencias consecutivas.
+
+$$
+\text{Jitter} = \frac{1}{N - 1} \sum_{i=2}^{N} \left| L_i - L_{i-1} \right|
+$$  
+
+Donde $N$ es la cantidad total de paquetes medidos.
+
+**Resultados obtenidos**
+
+A partir del procesamiento de los datos registrados, se obtuvieron los siguientes valores: 
+
+
+**Latencia promedio:** 2.760 s
+**Latencia mínima:** 2.000 s
+**Latencia máxima:** 3.000 s
+**Jitter:** 0.010 s
+
+2) Desarrollar un script análogo al punto anterior, pero para protocolo UDP. Repetir los ítems a), b) y c).
+
+Siguiendo el mismo procedimiento realizado con el protocolo TCP, se desarrollaron **scripts análogos** para la comunicación utilizando el protocolo **UDP**. En este caso, la transmisión de datos se realiza sin verificación de conexión, lo que permite una comunicación más rápida pero sin garantía de entrega de los paquetes.
+Para ello, se desarrollaron los siguientes scripts:
+ 
+**Script del [servidor](https://github.com/Biaan15/Rackea2/blob/main/TP5/TCP/server_w_log.py):** Encargado de recibir los datagramas enviados por el cliente.  
+
+**Script del [cliente](https://github.com/Biaan15/Rackea2/blob/main/TP5/TCP/client_w_log.py):** Responsable de generar y enviar los datagramas UDP con la información identificatoria correspondiente.
+
+Para validar el correcto funcionamiento de la transmisión con **UDP**, se configuraron las siguientes condiciones:
+Se enviaron **10 datagramas** con un **intervalo de 1 segundo** entre cada uno.
+
+Se utilizó la misma infraestructura de prueba que en la implementación TCP:
+
+**Cliente:** Laptop con sistema operativo Linux, dirección IP `192.168.1.33`.
+**Servidor:** Computadora de escritorio con sistema operativo Windows, dirección IP `192.168.1.24`.
+
+**Resultados obtenidos**
+
+
+
+![Figura 5](imagen/Figura5.png)
+
+
+![Figura 6](imagen/Figura6.png)
+
+Los resultados obtenidos demuestran que la comunicación **UDP** entre cliente y servidor se realizó de manera efectiva. La correcta recepción de los **10 datagramas** confirma que la transmisión se llevó a cabo sin pérdidas dentro de la red local. A diferencia de TCP, donde se garantiza la entrega, UDP no realiza comprobaciones de conexión, pero en esta prueba, los paquetes llegaron correctamente.
+Al capturar el tráfico con _Wireshark_ con el filtro `udp.port == 12345`, observamos en la figura a continuación exclusivamente la transmisión de los **10 datagramas**, lo que confirma que la comunicación entre cliente y servidor se ha realizado según lo esperado. 
+
+
+![Figura 7](imagen/Figura7.png)
+
+Esto ocurre ya que, a diferencia de TCP, **UDP** es un protocolo no orientado a la conexión, lo que significa que los datagramas se envían directamente sin una confirmación de recepción por parte del servidor. 
+
+En la captura, a su vez, se pueden identificar los paquetes con su respectiva carga útil, incluyendo los identificadores secuenciales esperados, lo que indica que la transmisión se realizó correctamente dentro de la red local.
+
+Ahora analizamos en detalle el contenido de un **datagrama en particular**: 
+
+
+![Figura 8](imagen/Figura8.png)
+
+En la figura anterior, se observa la estructura del paquete, donde se representa la información en **formato hexadecimal** y su correspondiente traducción en **ASCII**.
+
+Dentro del campo de **datos del datagrama**, podemos identificar que la carga útil contiene el texto `Rackea2_9`, lo que confirma que este paquete corresponde al noveno mensaje enviado durante la prueba. Esta representación hexadecimal es útil para analizar la integridad de los datos transmitidos, permitiendo verificar si la información se ha preservado correctamente a lo largo de la transmisión. 
+
+Tal como dijimos anteriormente, en **UDP**, los datos son enviados de forma directa sin procesos de confirmación, lo que implica que la carga útil viaja sin correcciones automáticas en caso de errores. Pero esta captura valida que el envío de los mensajes se realizó como se esperaba.
+
+
