@@ -63,15 +63,15 @@ El _script del cliente_ fue configurado para enviar un total de **10 paquetes** 
 
 Los resultados fueron los siguientes:
 
-![Figura 1](imagen/Figura1.png)
+![Figura 1](imagenes/Figura1.png)
 
-![Figura 2](imagen/Figura2.png)
+![Figura 2](imagenes/Figura2.png)
 
 A través de estas dos imágenes, podemos observar que el sistema cumple con el objetivo de enviar y recibir paquetes **TCP** de manera secuencial y con un intervalo de tiempo definido. La ejecución del _script del cliente_ [Figura 1] confirma el envío exitoso de los paquetes con la información identificatoria requerida, mientras que la [Figura 2] muestra la correcta recepción y procesamiento de los datos. 
 
 Desde el _servidor_, se usó **Wireshark** para capturar el tráfico TCP entre las dos computadoras.Una vez finalizada la transmisión de datos, se aplicó el filtro `tcp.port == 12345`, lo que permitió visualizar únicamente los paquetes TCP asociados a dicho puerto, establecido como el puerto de escucha del servidor. 
 
-![Figura 3](imagen/Figura3.png)
+![Figura 3](imagenes/Figura3.png)
 
 En este tráfico capturado, se observa de manera efectiva que la comunicación establecida se produce entre la dirección IP `192.168.1.24` **(cliente)** y la dirección `192.168.1.33` **(servidor)**. Durante la transmisión, el cliente envía paquetes desde un puerto aleatorio (`52498`) hacia el puerto `12345` del servidor. Esto es completamente normal en conexiones TCP, ya que los clientes eligen un puerto aleatorio para establecer una comunicación.  
 Al principio de la captura, se puede identificar el **three-way Handshake**, un mecanismo fundamental para la inicialización de una sesión TCP. Se observa la siguiente secuencia clásica de intercambio de paquetes: 
@@ -84,11 +84,10 @@ Esto indica que el canal TCP está correctamente establecido. Además, se identi
 * `PSH (Push)`: indica al receptor que debe procesar los datos de inmediato en lugar de almacenarlos temporalmente en el búfer. 
 * `ACK (Acknowledgement)`: confirma la recepción de datos enviados previamente.
 
-
 Estos paquetes contienen la **carga útil correspondiente** a los mensajes enviados, como _Rackea2_1, Rackea2_2, etc_. Su correcta transmisión y recepción confirma la funcionalidad del sistema implementado.
 En la captura de tráfico, al analizar el paquete número **9440**, se observa que corresponde al **séptimo paquete** transmitido, lo cual se puede verificar revisando su carga útil a través del _hex dump_. De esta manera, se evidencia la secuencia de bytes que representa los datos enviados, confirmando la correcta identificación del mensaje dentro del flujo de comunicación.
 
-![Figura 4](imagen/Figura4.png)
+![Figura 4](imagenes/Figura4.png)
 
 Hacia el final de la captura, se registra un intercambio de **FIN, ACK** por parte del cliente, seguido de una respuesta **ACK** del servidor. Esto indica que el cliente está cerrando correctamente la conexión después de enviar los **10 paquetes**.
 
@@ -182,14 +181,14 @@ Para validar el correcto funcionamiento de la transmisión con **UDP**, se confi
 
 **Resultados obtenidos**
 
-![Figura 5](imagen/Figura5.png)
+![Figura 5](imagenes/Figura5.png)
 
-![Figura 6](imagen/Figura6.png)
+![Figura 6](imagenes/Figura6.png)
 
 Los resultados obtenidos demuestran que la comunicación **UDP** entre cliente y servidor se realizó de manera efectiva. La correcta recepción de los **10 datagramas** confirma que la transmisión se llevó a cabo sin pérdidas dentro de la red local. A diferencia de TCP, donde se garantiza la entrega, UDP no realiza comprobaciones de conexión, pero en esta prueba, los paquetes llegaron correctamente.
 Al capturar el tráfico con _Wireshark_ con el filtro `udp.port == 12345`, observamos en la figura a continuación exclusivamente la transmisión de los **10 datagramas**, lo que confirma que la comunicación entre cliente y servidor se ha realizado según lo esperado. 
 
-![Figura 7](imagen/Figura7.png)
+![Figura 7](imagenes/Figura7.png)
 
 Esto ocurre ya que, a diferencia de TCP, **UDP** es un protocolo no orientado a la conexión, lo que significa que los datagramas se envían directamente sin una confirmación de recepción por parte del servidor. 
 
@@ -197,7 +196,7 @@ En la captura, a su vez, se pueden identificar los paquetes con su respectiva ca
 
 Ahora analizamos en detalle el contenido de un **datagrama en particular**: 
 
-![Figura 8](imagen/Figura8.png)
+![Figura 8](imagenes/Figura8.png)
 
 En la figura anterior, se observa la estructura del paquete, donde se representa la información en **formato hexadecimal** y su correspondiente traducción en **ASCII**.
 
