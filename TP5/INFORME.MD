@@ -23,27 +23,6 @@ _Felipe Pillichody_
 ---
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## Desarrollo
 
 Se han desarrollado scripts en _Python_ que permiten el envío y recepción secuencial de paquetes **TCP** a intervalos de tiempo configurables. Cada paquete contiene información identificatoria única, compuesta por el nombre del grupo y un número incremental. Para la implementación, se han utilizado las librerías estándar `socket` y `time`, garantizando una comunicación eficiente entre dispositivos dentro de una red local.
@@ -265,7 +244,7 @@ Para ello usaremos la librería `cryptograhy`. Esta librería robusta y segura n
 - Implementa algoritmos criptográficos modernos y seguros, recomendados por la comunidad y expertos.
 - Utiliza implementaciones de bajo nivel escritas en **C (OpenSSL)**, lo que la hace eficiente y robusta.
 
-** 2. Cifrado simétrico y asimétrico**
+**2. Cifrado simétrico y asimétrico**
 - **Simétrico:** AES, ChaCha20, Fernet (que usa AES en CBC con HMAC para autenticidad).
 - **Asimétrico:** RSA, DSA, Elliptic Curve (EC), Ed25519, X25519.
 - Permite cifrar, descifrar, firmar y verificar datos.
@@ -342,6 +321,7 @@ _**Cómo se implementaría conceptualmente en scripts:**_
 
 
 ---
+
 
 ## Referencias
 
