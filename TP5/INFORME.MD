@@ -257,4 +257,93 @@ La **encriptación** es una técnica que permite proteger la información median
 
 _En resumen_, la encriptación simétrica es más rápida pero menos segura en cuanto al intercambio de claves, mientras que la encriptación asimétrica es más segura pero más lenta. En muchos sistemas modernos se utilizan ambas combinadas para aprovechar las ventajas de cada una.
 
+Ahora vamos a modificar los scripts utilizados para realizar la práctica con encriptación de los mensajes.
+
+Para ello usaremos la librería `cryptograhy`. Esta librería robusta y segura nos otorga una manera muy fácil de usar e implementar cifrado, firmas, hashing y gestión de claves en Python. Se decidió utilizar esta librería por las características que brinda, tales como:
+
+**1. Seguridad**
+- Implementa algoritmos criptográficos modernos y seguros, recomendados por la comunidad y expertos.
+- Utiliza implementaciones de bajo nivel escritas en **C (OpenSSL)**, lo que la hace eficiente y robusta.
+
+** 2. Cifrado simétrico y asimétrico**
+- **Simétrico:** AES, ChaCha20, Fernet (que usa AES en CBC con HMAC para autenticidad).
+- **Asimétrico:** RSA, DSA, Elliptic Curve (EC), Ed25519, X25519.
+- Permite cifrar, descifrar, firmar y verificar datos.
+
+**3. Fácil de usar**
+- Proporciona APIs de alto nivel (como Fernet) para tareas comunes, y APIs de bajo nivel para usos avanzados.
+
+**4. Gestión de claves**
+- Permite generar, almacenar y cargar claves de manera segura.
+- Soporta serialización y deserialización de claves en varios formatos **(PEM, DER)**.
+
+
+La librería `cryptograhpy` se utiliza en los 2 scripts correspondientes:
+
+- [server_encrypted.py](https://github.com/Biaan15/Rackea2/blob/main/TP5/Encryption/server_encrypted.py)
+- [client_encrypted.py](https://github.com/Biaan15/Rackea2/blob/main/TP5/Encryption/client_encrypted.py) 
+
+En el script `client_encrypted.py` utilizamos específicamente el módulo `Fernet` de la librería para cifrar los mensajes antes de enviarlos al servidor. 
+
+1. **Importación y clave secreta:**  
+Importamos `Fernet` y definimos una clave secreta (`FERNET_KEY`). Esta clave debe ser la misma en el cliente y el servidor para que ambos puedan cifrar y descifrar los mensajes.
+
+La clave secreta la podemos generar usando la librería. 
+
+```python
+from cryptography.fernet import Fernet
+print(Fernet.generate_key())
+```
+
+Una vez creada la copiamos y usamos la misma para el cliente y el servidor:
+
+2. **Creación del objeto Fernet:**  
+   Creamos un objeto `fernet = Fernet(FERNET_KEY)`, que nos permite acceder a los métodos de cifrado y descifrado.
+
+3. **Cifrado del mensaje:**  
+   Antes de enviar cada mensaje, lo ciframos con `fernet.encrypt(mensaje.encode())`. Esto transforma el mensaje en texto cifrado (bytes), que es lo que realmente se envía por la red.
+
+4. **Envío seguro:**  
+   El mensaje cifrado se envía usando `s.sendall(encrypted)`. Así, si alguien intercepta el tráfico, no podrá leer el contenido sin la clave.
+
+Ya que hemos entendido cómo aplicamos la librería a los scripts, procedemos a ejecutar tanto el cliente como el servidor para realizar el envío y recepción de mensajes.
+
+![Figura 9](imagenes/Figura9.png)
+
+![Figura 10](imagenes/Figura10.png)
+
+Como podemos observar en las figuras, el cliente envía los paquetes, el servidor los recibe los paquetes y los muestra tal como en los scripts pasados, indicando que el encriptado y desencriptado están funcionando de manera correcta.
+
+Sin embargo, si analizamos uno de los paquetes enviados aleatoriamente podemos ver que la carga del mismo se encuentra encriptada, imposibilitandonos reconocer el mensaje `Rackea2_N` mediante la captura del tráfico, sin previamente desencriptar el mismo como lo hace el script del servidor.
+
+![Figura 11](imagenes/Figura11.png)
+
+Si analizamos los 100 paquetes enviados capturados por el cliente en [client_encrypted_log.txt](https://github.com/Biaan15/Rackea2/blob/main/TP5/Encryption/client_encrypted_log.txt) y por el servidor en [server_encrypted_log.txt](https://github.com/Biaan15/Rackea2/blob/main/TP5/Encryption/server_encrypted_log.txt), podemos calcular la latencia y el jitter como lo hicimos previamente.
+
+- **Latencia promedio:** 1.810 s
+- **Latencia mínima:** 1.000 s
+- **Latencia máxima:** 2.000 s
+- **Jitter:** 0.010
+
+Para encriptar la comunicación entre dos computadoras distantes que nunca han intercambiado información previamente, lo más seguro y práctico es utilizar **encriptación asimétrica** al inicio del proceso. Este método permite establecer un canal seguro sin necesidad de que ambas partes compartan previamente una clave secreta.
+
+El esquema que se implementaría, podría ser de la siguiente manera: 
+
+- Cada computadora genera su propio par de claves, una pública y una privada. La clave pública se puede compartir libremente, así que al comienzo de la conexión, ambas partes envían sus claves públicas. A partir de ahí, cualquier mensaje que una computadora quiera mandar, lo cifra usando la clave pública del destinatario. De ese modo, solo el receptor, con su clave privada, puede descifrarlo. 
+
+- Sin embargo, como este método es algo lento para mensajes largos, una vez que se establece este canal seguro, lo que haría sería usar esa conexión protegida para intercambiar una clave simétrica temporal, generada al momento. Esa clave se usará para cifrar los mensajes restantes de forma mucho más rápida. En definitiva, sería una especie de "acuerdo inicial" con criptografía asimétrica para poder usar después un cifrado más eficiente.
+
+_**Cómo se implementaría conceptualmente en scripts:**_
+- Cada script (**cliente y servidor**) generaría su propio par de claves si no las tuviera.
+- Al establecer la conexión, intercambiarán las claves públicas.
+- Los mensajes iniciales (como una clave _AES_ aleatoria) se cifrarían con encriptación asimétrica.
+- Una vez establecida la clave simétrica, ambos scripts usarían esa clave con un algoritmo como _AES_ para cifrar/desencriptar los mensajes en adelante.
+- Opcionalmente, se podrían agregar firmas digitales para asegurar la integridad y autenticidad de los mensajes.
+
+
+---
+
+## Referencias
+
+- [1] https://blog.mailfence.com/es/cifrado-simetrico-vs-asimetrico/ 
 
